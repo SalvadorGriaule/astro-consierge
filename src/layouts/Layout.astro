@@ -1,3 +1,7 @@
+---
+import "../styles/global.css";
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -5,9 +9,20 @@
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Igor</title>
 	</head>
 	<body>
+		<header
+			class="flex justify-between item-center w-full p-2 bg-black text-white"
+		>
+			<a href="/"><h1 class="text-2xl">Igor Service</h1></a>
+			<nav>
+				<ul class="flex space-x-2">
+					<a href="/signIn"><li>Inscription</li></a>
+					<a href="/login"><li>Connection</li></a>
+				</ul>
+			</nav>
+		</header>
 		<slot />
 	</body>
 </html>

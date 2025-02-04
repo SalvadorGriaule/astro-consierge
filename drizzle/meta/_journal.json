@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1738675183891,
+      "tag": "0000_bouncy_radioactive_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1738676456012,
+      "tag": "0001_fantastic_matthew_murdock",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1738676502243,
+      "tag": "0002_rare_nicolaos",
+      "breakpoints": true
+    }
+  ]
+}
