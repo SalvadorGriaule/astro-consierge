@@ -27,11 +27,19 @@ app.post("/signIn/post", async (req, res) => {
                 res.redirect("/")
             } catch(e){
                 console.log(e)
+                res.send("acces denid")
             }
         })
     })
 })
 
+app.post("/login/post", async (req, res) => {
+    const data = req.body;
+    const auth = await User.findOne({ where: { email:data.email }});
+    bcrypt.compare(data.password, auth.password, (err,result) => {
+        result ? res.redirect(`/UserSpace/${auth.id}`) : res.send("Acces denided")
+    })
+})
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`)

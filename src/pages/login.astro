@@ -5,9 +5,9 @@ import Layout from "../layouts/Layout.astro";
 <Layout>
     <main class="w-full flex justify-center my-4">
         <div class="w-1/3 p-2 flex justify-center">
-            <form action="post" class="flex flex-col space-y-2">
-                <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="email" placeholder="e-mail">
-                <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="password" placeholder="password">
+            <form action="/login/post" method="POST" class="flex flex-col space-y-2">
+                <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" name="email" type="email" placeholder="e-mail">
+                <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" name="password" type="password" placeholder="password">
                 <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md bg-black text-white" type="submit" >
             </form>
         </div>
