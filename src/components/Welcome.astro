@@ -1,9 +1,0 @@
----
-const response = await fetch('http://localhost:3000/api/test')
-const data = await response.json()
----
-<main>
-	{data.map((person: { name: Object }) => (
-		<li>{person.name}</li>
-	))}
-</main>
