@@ -1,7 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 const { id } = Astro.params;
-const info = Astro.cookies.get("connect.sid")
+const info = Astro.cookies.get("connect.sid")?.value
+const sessionID  = info?.slice(info?.indexOf(':')+1,info?.indexOf('.'))
 ---
 
 <Layout>
@@ -11,6 +12,7 @@ const info = Astro.cookies.get("connect.sid")
     </script>
     <h2>{id}</h2>
     <div>
-        <p>{info?.value}</p>
+        <p>{info}</p>
+        <p>{sessionID}</p>
     </div>
 </Layout>

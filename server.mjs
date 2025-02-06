@@ -66,7 +66,7 @@ app.post("/login/post", async (req, res) => {
     bcrypt.compare(data.password, auth.password, (err, result) => {
         if (result) {
             jwt.sign({ user:auth.id }, privateKey,{ algorithm: 'RS256'}, (err, token) => {
-                req.session.role = auth.id
+                req.session.role = "user"
                 req.session.jwt = token 
                 req.session.save(() => {
                     console.log(req.session.id);
