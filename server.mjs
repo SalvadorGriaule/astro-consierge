@@ -26,7 +26,7 @@ const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
     privateKeyEncoding: { type: "pkcs8", format: "pem"}
 })
 
-const sessionStore = new SequelizeSessionStore({
+export const sessionStore = new SequelizeSessionStore({
     db:db
 })
 
@@ -76,6 +76,23 @@ app.post("/login/post", async (req, res) => {
         } else {
             res.send("Acces denided")
         }
+    })
+})
+
+app.get("/session/:id", async (req,res) => {
+    const id = req.params;
+    const data = sessionStore.get(id.id,(err,session) => {
+        if(!err) {
+            res.send(session)
+        } else {
+            res.send({error:"lien invalide"})
+        }
+    })
+})
+
+app.get("/logout", (req,res) => {
+    req.session.destroy((err) => {
+        res.redirect("/");
     })
 })
 
