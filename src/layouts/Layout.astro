@@ -3,9 +3,8 @@ import "../styles/global.css";
 
 interface Props{
 	title: string;
-	addMeta:string[]
 }
-const {title, addMeta} = Astro.props
+const {title} = Astro.props
 ---
 
 <!doctype html>
@@ -15,7 +14,7 @@ const {title, addMeta} = Astro.props
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		{}
+		<slot name="head" />
 		<title>{title}</title>
 	</head>
 	<body>
