@@ -48,7 +48,7 @@ app.post("/signIn/post", async (req, res) => {
     const data = req.body;
     bcrypt.genSalt(saltRound, (err, salt) => {
         bcrypt.hash(data.password, salt, async (err, hash) => {
-            data.password = hash
+            data.password = hash;
             try {
                 const insert = await User.create(data)
                 res.redirect("/")
