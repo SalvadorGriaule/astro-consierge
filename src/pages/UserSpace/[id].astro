@@ -1,8 +1,16 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 const { id } = Astro.params;
+const info = Astro.cookies.get("connect.sid")
 ---
 
 <Layout>
+    <script>
+        const cookies = document.cookie
+        console.log(cookies);
+    </script>
     <h2>{id}</h2>
+    <div>
+        <p>{info?.value}</p>
+    </div>
 </Layout>

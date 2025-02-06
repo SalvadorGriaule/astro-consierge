@@ -41,4 +41,4 @@ const initTable = async () => {
     await db.sync()
 } 
 
-export { initTable , User }
+export { initTable , User , db}

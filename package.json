@@ -16,6 +16,7 @@
     "autoprefixer": "^10.4.20",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
+    "connect-session-sequelize": "^7.1.7",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
