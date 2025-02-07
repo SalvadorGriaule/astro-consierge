@@ -44,6 +44,23 @@ const initTable = async () => {
             updatedAt: false
         }
     )
+    
+    Admin.init({
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        eamil: {
+            type: DataTypes.STRING,
+            allowNull:false
+        }},{
+            sequelize: db,
+            modelName: "Admin",
+            timestamps: true,
+            createdAt: true,
+            updatedAt: false
+        }
+    )
 
     EmailStandBy.init({
         key: {
