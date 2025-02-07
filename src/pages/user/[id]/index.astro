@@ -1,6 +1,7 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { getSession } from "../../db/session.js"
+
+import Layout from "../../../layouts/Layout.astro";
+import { getSession } from "../../../db/session.js"
 
 const { id } = Astro.params;
 const info = Astro.cookies.get("connect.sid")?.value;
