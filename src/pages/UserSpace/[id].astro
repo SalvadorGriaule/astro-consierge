@@ -1,19 +1,16 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { getSession } from "../../db/session.js"
+
 const { id } = Astro.params;
-const info = Astro.cookies.get("connect.sid")?.value
-const sessionID  = info?.slice(info?.indexOf(':')+1,info?.indexOf('.'))
+const info = Astro.cookies.get("connect.sid")?.value;
+const json = await getSession(info)
+if (!json.hasOwnProperty("role")) return Astro.redirect("/");
+const role = json.role;
 
 ---
 
 <Layout title="UserSpace">
-    <script>
-        const cookies = document.cookie
-        console.log(cookies);
-    </script>
     <h2>{id}</h2>
-    <div>
-        <p>{info}</p>
-        <p>{sessionID}</p>
-    </div>
+    <div>{role}</div>
 </Layout>

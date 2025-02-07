@@ -27,6 +27,10 @@ const initTable = async () => {
             validate: {
                 len: [3, Infinity]
             }
+        },
+        emailConfirm: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
         }
     },
         {

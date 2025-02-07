@@ -1,10 +1,17 @@
 ---
 import "../styles/global.css";
+import { getSession } from "../db/session.js";
+import Menu from "../componants/svelte/Menu.svelte"
 
 interface Props{
 	title: string;
 }
+
 const {title} = Astro.props
+const info = Astro.cookies.get("connect.sid")?.value;
+const json = await getSession(info)
+const role = json.hasOwnProperty("role") ? json.role : "guest"
+
 ---
 
 <!doctype html>
