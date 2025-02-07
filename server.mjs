@@ -7,8 +7,8 @@ import cookiesParser from "cookie-parser"
 import session from "express-session"
 import SequelizeStore from "connect-session-sequelize"
 import { handler as astroHandler } from "./dist/server/entry.mjs";
-import { initTable, User, EmailStandBy , db } from "./src/db/db.js";
-import { sendConfirm } from "./src/db/mailSender.js"
+import { initTable, User, EmailStandBy , ResetPassword , db } from "./src/db/db.js";
+import { sendConfirm , sendReset} from "./src/db/mailSender.js"
 import * as crypto from "crypto"
 
 const SequelizeSessionStore = SequelizeStore(session.Store)
@@ -130,6 +130,45 @@ app.get("/mailConfirmation/:email", async (req, res) => {
             res.redirect(`/user/${confirm.id}`)
         }
     }
+})
+
+app.post("/resetPassword/post", async (req, res) => {
+    const data = req.body;
+    const target = await User.findOne({ where: {email : data.email}})
+    if(target) {
+        sendReset(data.email)
+    }
+    res.redirect("/login")
+})
+
+app.get("/resetPassword/confirm/:email", async (req,res) => {
+    const param = req.params;
+    const ifExist = await ResetPassword.findOne({where: { key: param.email }});
+    if (ifExist){
+        const target = await User.findOne({where: {email: ifExist.email}})
+        await ResetPassword.destroy({ where: { id : ifExist.id }})
+        jwt.sign({ user: target.id }, privateKey, { algorithm: 'RS256' }, (err, token) => {
+            req.session.role = "user"
+            req.session.jwt = token
+            req.session.save(() => {
+                console.log(req.session.id);
+            })
+        })
+        res.redirect(`/user/${target.id}/confirmPassword`)
+    }
+})
+
+app.post("/passwordConfirm/post", async (req,res) => {
+    const data  = req.body
+    const id = jwt.verify(req.session.jwt, privateKey,(err, decoded) => {
+        console.log(decoded);
+        if(!err){
+            bcrypt.hash(data.password, saltRound, async (err, hash) => {
+                const target = await User.update({ password : hash},{ where: { id : decoded.user}})
+                res.redirect(`/user/${decoded.user}`);
+            })
+        }
+    }); 
 })
 
 app.listen(PORT, () => {
