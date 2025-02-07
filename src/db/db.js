@@ -3,6 +3,9 @@ import { Sequelize, DataTypes, Model } from "sequelize";
 const db = new Sequelize("mysql://root@localhost:3306/igor")
 
 class User extends Model { }
+class EmailStandBy extends Model { }
+class ResetPassword extends Model { }
+class Admin extends Model { }
 
 const initTable = async () => {
     User.init({
@@ -41,8 +44,59 @@ const initTable = async () => {
             updatedAt: false
         }
     )
+    
+    Admin.init({
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        eamil: {
+            type: DataTypes.STRING,
+            allowNull:false
+        }},{
+            sequelize: db,
+            modelName: "Admin",
+            timestamps: true,
+            createdAt: true,
+            updatedAt: false
+        }
+    )
+
+    EmailStandBy.init({
+        key: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+    }, {
+        sequelize: db,
+        modelName: "EmailStandBy",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false
+    })
+
+    ResetPassword.init({
+        key: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+    }, {
+        sequelize: db,
+        modelName: "ResetPassword",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false
+    })
 
     await db.sync()
-} 
+}
 
-export { initTable , User , db}
+export { initTable, User, EmailStandBy , ResetPassword, db }
