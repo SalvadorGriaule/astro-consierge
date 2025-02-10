@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 ---
 
 <Layout title="Map">
-    <script src="../../assets/js/map.js"></script>
+    <script src="../../assets/js/global.js"></script>
 
     <div id="macarte" class="w-[100%] h-[800px] border-2 border-black">
         <div id="resultsList"></div>
@@ -14,6 +14,47 @@ import "leaflet/dist/leaflet.css";
         <label for="search">Vous recherchez quoi en fait ?</label>
         <input type="text" name="search" id="search" />
         <button type="button" id="searchButton"> Rechercher </button>
+
+        <div id="advance-search-link" class="inactive">Recherche Avancée</div>
+
+        <div id="advance-search">
+            <legend>Distance de recherche max. ?</legend>
+            <div>
+                <input
+                    type="radio"
+                    id="radius1"
+                    name="search-radius"
+                    value="10"
+                />
+                <label for="radius1">10 km</label>
+
+                <input
+                    type="radio"
+                    id="radius2"
+                    name="search-radius"
+                    value="25"
+                />
+                <label for="radius2">25 km</label>
+
+                <input
+                    type="radio"
+                    id="radius3"
+                    name="search-radius"
+                    value="50"
+                />
+                <label for="radius3">50 km</label>
+
+                <input
+                    type="radio"
+                    id="radius4"
+                    name="search-radius"
+                    value="100"
+                />
+                <label for="radius4">100 km</label>
+
+                <input type="text" id="radius-free" placeholder="Ou bien la distance de votre choix (ex:1000)"/>
+            </div>
+        </div>
     </form>
 
     <style is:inline>
@@ -21,20 +62,7 @@ import "leaflet/dist/leaflet.css";
             position: relative;
             z-index: 0;
         }
-        .my-control {
-            padding: 2px;
-            display: block;
-            border-radius: 0px;
-        }
-        form {
-            padding: 20px;
-        }
-        button,
-        #search {
-            border: 2px solid;
-            border-radius: 5px;
-            padding: 3px;
-        }
+        /* Inside Div Map */
         #resultsList {
             display: none;
             position: absolute;
@@ -62,5 +90,40 @@ import "leaflet/dist/leaflet.css";
         .item-search:hover {
             background-color: rgba(155, 155, 155, 0.2);
         }
+        .my-control {
+            padding: 2px;
+            display: block;
+            border-radius: 0px;
+        }
+        /* End Inside Div Map */
+        form {
+            padding: 20px;
+        }
+        button,
+        #search,
+        #radius-free {
+            border: 2px solid;
+            border-radius: 5px;
+            padding: 3px;
+        }
+        /* Recherche avancée */
+        #advance-search-link {
+            text-decoration: underline;
+            width: fit-content;
+            cursor: pointer;
+        }
+        .inactive {
+            color: rgba(0, 0, 255, 1);
+        }
+        .active {
+            color: rgb(139, 41, 250);
+        }
+        #advance-search {
+            display: none;
+        }
+        #radius-free {
+            width: 320px;
+        }
+        /* Fin recherche avancée */
     </style>
 </Layout>

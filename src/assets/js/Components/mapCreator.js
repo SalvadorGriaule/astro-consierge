@@ -1,8 +1,9 @@
 import L from "leaflet";
+import searchMap from "./searchMap";
 
 const mapCreator = (lat, long) => {
-    let markers = [];
-    let map = L.map('macarte').setView([lat, long], 13);
+    markers = [];
+    map = L.map('macarte').setView([lat, long], 13);
 
     let selectedTile = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -10,71 +11,7 @@ const mapCreator = (lat, long) => {
     }).addTo(map);
     let tileType = "OpenStreetMap";
 
-    let marker = L.marker([lat, long]).addTo(map);
-
-    async function searchMap() {
-        const query = document.getElementById('search').value;
-        const url = `https://geocode.maps.co/search?city=${encodeURIComponent(query)}&api_key=67a5dc081fc93332201545bvsa7175d`;
-
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            console.dir(data);
-
-            if (data && data.length > 0) {
-                marker = marker.remove();
-                markers.forEach(marker => marker.remove());
-                markers = [];
-                document.getElementById('resultsList').innerHTML = '';
-
-                // Ajouter un conteneur pour la liste des résultats
-                const resultsContainer = document.getElementById('resultsList');
-
-                const closeButton = document.createElement('div');
-                closeButton.id = "closeButton";
-                closeButton.textContent = 'X';
-
-                resultsContainer.appendChild(closeButton);
-                resultsContainer.style.display = 'block';
-                L.DomEvent.disableScrollPropagation(resultsContainer);
-
-                closeButton.addEventListener('click', () => {
-                    resultsContainer.style.display = 'none';  // Cache la liste des résultats
-                });
-
-
-                data.forEach((result, index) => {
-                    const lat = result.lat;
-                    const long = result.lon;
-
-                    const newMarker = L.marker([lat, long]).addTo(map);
-                    markers.push(newMarker);
-                    newMarker.bindPopup(`<b>${result.display_name}</b>`);
-                    newMarker.on('mouseover', () => {
-                        newMarker.openPopup();
-                    });
-
-                    const listItem = document.createElement('div');
-                    listItem.setAttribute('class', 'item-search');
-                    listItem.textContent = `${index + 1}: ${result.display_name}`;
-
-                    listItem.addEventListener('mouseover', () => {
-                        map.setView([lat, long], 13);
-                        newMarker.openPopup();
-                    });
-
-                    resultsContainer.appendChild(listItem);
-                })
-                map.setView([data[0].lat, data[0].lon], 13);
-                document.getElementById('search').value = '';
-
-            } else {
-                alert('Aucun résultat trouvé.');
-            }
-        } catch (error) {
-            console.error('Erreur lors de la recherche :', error);
-        }
-    }
+    let marker = L.marker([lat, long], { icon: greenIcon }).addTo(map);
 
     // Ajouter un gestionnaire d'événements pour le bouton de recherche
     document.getElementById('searchButton').addEventListener('click', () => {
