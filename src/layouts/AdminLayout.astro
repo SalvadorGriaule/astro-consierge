@@ -1,0 +1,43 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getSession, getID } from "../db/session";
+
+const info = Astro.cookies.get("connect.sid")?.value;
+const json = await getSession(info);
+const adminID = getID(json.jwt);
+if (!json.hasOwnProperty("role") && json.role != "admin")
+    return Astro.redirect("/");
+const role = json.role;
+
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+
+// const adminID = { user: 1 };
+---
+
+<Layout title={title}>
+    <header class="fixed top-0 w-full p-2 bg-slate-300/70 flex justify-between">
+        <p>ID:{adminID.user}</p>
+        <nav>
+            <ul>
+                <a href="/"><li>Retour au site</li></a>
+            </ul>
+        </nav>
+    </header>
+    <main
+        class="w-screen h-screen flex justify-around items-center bg-linear-to-br from-slate-400 to-slate-600"
+    >
+        <div class="w-2/8 bg-zinc-300 rounded-md p-2 text-center">
+            <menu>
+                <a href="/Admin/UserDashboard"><li>Utilisateur</li></a>
+                <li>DataMap</li>
+            </menu>
+        </div>
+        <div class="w-5/8 bg-zinc-300 rounded-md p-2 text-center">
+            <slot />
+        </div>
+    </main>
+</Layout>

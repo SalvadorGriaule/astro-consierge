@@ -1,16 +1,11 @@
 ---
 import "../styles/global.css";
-import { getSession } from "../db/session.js";
-import Menu from "../componants/svelte/Menu.svelte"
 
 interface Props{
 	title: string;
 }
 
 const {title} = Astro.props
-const info = Astro.cookies.get("connect.sid")?.value;
-const json = await getSession(info)
-const role = json.hasOwnProperty("role") ? json.role : "guest"
 
 ---
 
@@ -25,14 +20,6 @@ const role = json.hasOwnProperty("role") ? json.role : "guest"
 		<title>{title}</title>
 	</head>
 	<body>
-		<header
-			class="flex justify-between item-center w-full p-2 bg-black text-white"
-		>
-			<a href="/"><h1 class="text-2xl">Igor Service</h1></a>
-			<nav>
-				<Menu role={role}/>
-			</nav>
-		</header>
 		<slot />
 	</body>
 </html>

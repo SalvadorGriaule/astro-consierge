@@ -48,9 +48,13 @@ const initTable = async () => {
     Admin.init({
         email: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true,
+            validate: {
+                isEmail: true,
+            }
         },
-        eamil: {
+        password: {
             type: DataTypes.STRING,
             allowNull:false
         }},{
@@ -99,4 +103,4 @@ const initTable = async () => {
     await db.sync()
 }
 
-export { initTable, User, EmailStandBy , ResetPassword, db }
+export { initTable, User, EmailStandBy , ResetPassword, Admin, db }

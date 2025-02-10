@@ -1,13 +1,15 @@
 ---
 import Layout from "./Layout.astro";
+import Header from "../componants/astro/Header.astro";
 
-interface Props{
+interface Props {
 	title: string;
 }
 
-const {title} = Astro.props
+const { title } = Astro.props;
 ---
 
 <Layout title={title}>
-    
+	<Header />
+	<slot />
 </Layout>

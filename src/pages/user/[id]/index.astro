@@ -1,17 +1,16 @@
 ---
-
-import Layout from "../../../layouts/Layout.astro";
-import { getSession } from "../../../db/session.js"
+import UserLayout from '../../../layouts/UserLayout.astro';
+import { checkSession } from "../../../db/session.js"
 
 const { id } = Astro.params;
 const info = Astro.cookies.get("connect.sid")?.value;
-const json = await getSession(info)
-if (!json.hasOwnProperty("role")) return Astro.redirect("/");
+const json = await checkSession(info, id, "user")
+if (json.hasOwnProperty("error")) return Astro.redirect("/");
 const role = json.role;
 
 ---
 
-<Layout title="UserSpace">
+<UserLayout title="UserSpace">
     <h2>{id}</h2>
     <div>{role}</div>
-</Layout>
+</UserLayout>

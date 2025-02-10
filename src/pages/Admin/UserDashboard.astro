@@ -1,0 +1,16 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { allUser } from "../../db/admin";
+
+const userList = await allUser();
+
+---
+
+<AdminLayout title="DashBoard">
+    <h2 class="text-3xl">Informations des Utilisateurs</h2>
+
+    <div class="h-70 overflow-scroll w-7/8">
+        {userList}
+    </div>
+
+</AdminLayout>

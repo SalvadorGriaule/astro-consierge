@@ -6,10 +6,11 @@ import jwt from "jsonwebtoken"
 import cookiesParser from "cookie-parser"
 import session from "express-session"
 import SequelizeStore from "connect-session-sequelize"
-import { handler as astroHandler } from "./dist/server/entry.mjs";
-import { initTable, User, EmailStandBy , ResetPassword , db } from "./src/db/db.js";
-import { sendConfirm , sendReset} from "./src/db/mailSender.js"
 import * as crypto from "crypto"
+import { handler as astroHandler } from "./dist/server/entry.mjs";
+import { initTable, User, EmailStandBy, ResetPassword, db, Admin } from "./src/db/db.js";
+import { sendConfirm, sendReset } from "./src/db/mailSender.js"
+import { seedAdmin } from "./src/db/admin.js"
 
 const SequelizeSessionStore = SequelizeStore(session.Store)
 // express const
@@ -22,7 +23,9 @@ const saltRound = 10;
 dotenv.config();
 const sessionEnv = process.env.SESSION_KEY
 
-const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+globalThis.rsaKey = { publicKey:"" , privateKey:""}
+
+rsaKey = crypto.generateKeyPairSync("rsa", {
     modulusLength: 2048,
     publicKeyEncoding: { type: "spki", format: "pem" },
     privateKeyEncoding: { type: "pkcs8", format: "pem" }
@@ -45,17 +48,18 @@ app.use(session({
 
 sessionStore.sync()
 initTable()
+seedAdmin()
 
 app.post("/signIn/post", async (req, res) => {
     const data = req.body;
     bcrypt.genSalt(saltRound, (err, salt) => {
         bcrypt.hash(data.password, salt, async (err, hash) => {
             data.password = hash;
-            
+
             try {
                 const insert = await User.create(data)
                 sendConfirm(data.email)
-                jwt.sign({ user: insert.id }, privateKey, { algorithm: 'RS256' }, (err, token) => {
+                jwt.sign({ user: insert.id }, rsaKey.privateKey, { algorithm: 'RS256' }, (err, token) => {
                     req.session.role = "user"
                     req.session.jwt = token
                     req.session.save(() => {
@@ -78,7 +82,7 @@ app.post("/login/post", async (req, res) => {
     if (auth) {
         bcrypt.compare(data.password, auth.password, (err, result) => {
             if (result) {
-                jwt.sign({ user: auth.id }, privateKey, { algorithm: 'RS256' }, (err, token) => {
+                jwt.sign({ user: auth.id }, rsaKey.privateKey, { algorithm: 'RS256' }, (err, token) => {
                     req.session.role = "user"
                     req.session.jwt = token
                     req.session.save(() => {
@@ -114,13 +118,13 @@ app.get("/logout", (req, res) => {
 
 app.get("/mailConfirmation/:email", async (req, res) => {
     const email = req.params;
-    const ifExist = await EmailStandBy.findOne({ where: { key: email.email }})
-    if(ifExist){
-        await EmailStandBy.destroy({ where: { id : ifExist.id }})
+    const ifExist = await EmailStandBy.findOne({ where: { key: email.email } })
+    if (ifExist) {
+        await EmailStandBy.destroy({ where: { id: ifExist.id } })
         const confirm = await User.findOne({ where: { email: ifExist.email } })
         if (confirm) {
             await User.update({ emailConfirm: true }, { where: { email: email.email } })
-            jwt.sign({ user: confirm.id }, privateKey, { algorithm: 'RS256' }, (err, token) => {
+            jwt.sign({ user: confirm.id }, rsaKey.privateKey, { algorithm: 'RS256' }, (err, token) => {
                 req.session.role = "user"
                 req.session.jwt = token
                 req.session.save(() => {
@@ -134,20 +138,20 @@ app.get("/mailConfirmation/:email", async (req, res) => {
 
 app.post("/resetPassword/post", async (req, res) => {
     const data = req.body;
-    const target = await User.findOne({ where: {email : data.email}})
-    if(target) {
+    const target = await User.findOne({ where: { email: data.email } })
+    if (target) {
         sendReset(data.email)
     }
     res.redirect("/login")
 })
 
-app.get("/resetPassword/confirm/:email", async (req,res) => {
+app.get("/resetPassword/confirm/:email", async (req, res) => {
     const param = req.params;
-    const ifExist = await ResetPassword.findOne({where: { key: param.email }});
-    if (ifExist){
-        const target = await User.findOne({where: {email: ifExist.email}})
-        await ResetPassword.destroy({ where: { id : ifExist.id }})
-        jwt.sign({ user: target.id }, privateKey, { algorithm: 'RS256' }, (err, token) => {
+    const ifExist = await ResetPassword.findOne({ where: { key: param.email } });
+    if (ifExist) {
+        const target = await User.findOne({ where: { email: ifExist.email } })
+        await ResetPassword.destroy({ where: { id: ifExist.id } })
+        jwt.sign({ user: target.id }, rsaKey.privateKey, { algorithm: 'RS256' }, (err, token) => {
             req.session.role = "user"
             req.session.jwt = token
             req.session.save(() => {
@@ -158,17 +162,45 @@ app.get("/resetPassword/confirm/:email", async (req,res) => {
     }
 })
 
-app.post("/passwordConfirm/post", async (req,res) => {
-    const data  = req.body
-    const id = jwt.verify(req.session.jwt, privateKey,(err, decoded) => {
+app.post("/passwordConfirm/post", async (req, res) => {
+    const data = req.body
+    const id = jwt.verify(req.session.jwt, rsaKey.privateKey, (err, decoded) => {
         console.log(decoded);
-        if(!err){
+        if (!err) {
             bcrypt.hash(data.password, saltRound, async (err, hash) => {
-                const target = await User.update({ password : hash},{ where: { id : decoded.user}})
-                res.redirect(`/user/${decoded.user}`);
+                try {
+                    const target = await User.update({ password: hash }, { where: { id: decoded.user } })
+                    res.redirect(`/user/${decoded.user}`);
+                } catch (e) {
+                    console.log(e);
+                    res.redirect("/")
+                }
             })
         }
-    }); 
+    });
+})
+
+app.post("/admin/post", async (req, res) => {
+    const data = req.body;
+    const auth = await Admin.findOne({ where: { email: data.email } });
+    if (auth) {
+        bcrypt.compare(data.password, auth.password, (err, result) => {
+            if (result) {
+                jwt.sign({ user: auth.id }, rsaKey.privateKey, { algorithm: 'RS256' }, (err, token) => {
+                    req.session.role = "admin"
+                    req.session.jwt = token
+                    req.session.save(() => {
+                        console.log(req.session.id);
+                    })
+                })
+                res.redirect(`/Admin/dashboard`)
+            } else {
+                res.send("Acces denided")
+            }
+        })
+    } else {
+        res.send("Email not found")
+    }
 })
 
 
