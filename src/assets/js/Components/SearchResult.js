@@ -1,5 +1,3 @@
-console.log("Hello from SearchResult.js");
-
 const SearchResult = (result, index) => {
     const resultsContainer = document.getElementById('resultsList');
     const lat = result.lat;

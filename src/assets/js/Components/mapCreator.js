@@ -1,7 +1,8 @@
 import L from "leaflet";
-import searchMap from "./searchMap";
+import { setMarker, getMarker } from '../global';
+import searchMap from "./SearchMap";
 
-const mapCreator = (lat, long) => {
+const MapCreator = (lat, long) => {
     markers = [];
     map = L.map('macarte').setView([lat, long], 13);
 
@@ -11,7 +12,8 @@ const mapCreator = (lat, long) => {
     }).addTo(map);
     let tileType = "OpenStreetMap";
 
-    let marker = L.marker([lat, long], { icon: greenIcon }).addTo(map);
+    setMarker(lat, long, map, greenIcon);
+    let marker = getMarker();
 
     // Ajouter un gestionnaire d'événements pour le bouton de recherche
     document.getElementById('searchButton').addEventListener('click', () => {
@@ -82,4 +84,4 @@ const mapCreator = (lat, long) => {
     let myControl = new MyControlClass().addTo(map);
 }
 
-export default mapCreator;
+export default MapCreator;

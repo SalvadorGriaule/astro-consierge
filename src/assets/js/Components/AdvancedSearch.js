@@ -1,5 +1,3 @@
-console.log("Hello from AdvanceSearch.js");
-
 const AdvanceSearch = () => {
     /* Affichage des paramètres avancés de recherche */
     let button = document.getElementById('advance-search-link');
@@ -18,12 +16,11 @@ const AdvanceSearch = () => {
     /* Fin Affichage des paramètres avancés de recherche */
     /* Récupération & Envoi des données des paramètres avancées */
     document.getElementById('searchButton').addEventListener('click', () => {
-        var searchQuery = document.getElementById('search').value;
-        var searchRadius = ''; // Variable pour stocker le rayon
+        let searchRadius = ''; // Variable pour stocker le rayon
 
         // Vérifier quel bouton radio est sélectionné
-        var radios = document.getElementsByName('search-radius');
-        for (var i = 0; i < radios.length; i++) {
+        let radios = document.getElementsByName('search-radius');
+        for (i = 0; i < radios.length; i++) {
             if (radios[i].checked) {
                 searchRadius = radios[i].value; // Récupérer la valeur du radio sélectionné
                 radios[i].checked=false;
@@ -41,14 +38,6 @@ const AdvanceSearch = () => {
         let numericRadius = searchRadius.replace(/[^0-9\.]/g, '');
         console.log('Recherche pour : ' + searchQuery);
         console.log('Rayon de recherche : ' + (numericRadius ? numericRadius : 'Aucun rayon spécifié'));
-
-        // Créer et émettre l'événement personnalisé avec la valeur de numericRadius
-        const event = new CustomEvent('search-radius-changed', {
-            detail: numericRadius
-        });
-
-        // Émettre l'événement sur le document pour qu'il soit écouté par le parent
-        document.dispatchEvent(event);
     });
 };
 
