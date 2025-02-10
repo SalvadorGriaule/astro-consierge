@@ -1,5 +1,5 @@
 import { navGPS, navIP } from "./Components/nav";
-import AdvanceSearch from "./AdvancedSearch";
+import AdvanceSearch from "./Components/AdvancedSearch";
 
 globalThis.lat = 0;
 globalThis.long = 0;
@@ -25,11 +25,16 @@ const options = {
     maximumAge: 0,
 };
 
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(navGPS, navIP, options);
-    /* navGPS permet la localisation par l'api navigator.geolocation
-    En cas de problème quelconque on bascule sur une API moins précise geolocalisant par l'adresse IP de l'utilisateur (voir navIP) */
-} else {
-    navIP();
-}
+const Localisation = () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(navGPS, navIP, options);
+        /* navGPS permet la localisation par l'api navigator.geolocation
+        En cas de problème quelconque on bascule sur une API moins précise geolocalisant par l'adresse IP de l'utilisateur (voir navIP) */
+    } else {
+        navIP();
+    }
+};
+
 AdvanceSearch();
+
+export { Localisation };
