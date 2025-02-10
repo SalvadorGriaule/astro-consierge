@@ -9,7 +9,6 @@ const options = {
 };
 
 function success(pos) {
-    // console.log("non c'est bon tout est sous contrôle");
     const crd = pos.coords;
 
     console.log("Your current position is:");
@@ -24,7 +23,6 @@ function success(pos) {
 }
 
 function error(geolocError) {
-    // console.log("Ah bah y a une erreur lol");
     fetch('https://api.ipify.org?format=json')
         .then(response => response.json())
         .then(data => {

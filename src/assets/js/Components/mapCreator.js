@@ -14,11 +14,12 @@ const mapCreator = (lat, long) => {
 
     async function searchMap() {
         const query = document.getElementById('search').value;
-        const url = `https://geocode.maps.co/search?q=${encodeURIComponent(query)}&api_key=67a5dc081fc93332201545bvsa7175d`;
+        const url = `https://geocode.maps.co/search?city=${encodeURIComponent(query)}&api_key=67a5dc081fc93332201545bvsa7175d`;
 
         try {
             const response = await fetch(url);
             const data = await response.json();
+            console.dir(data);
 
             if (data && data.length > 0) {
                 marker = marker.remove();
@@ -35,6 +36,7 @@ const mapCreator = (lat, long) => {
 
                 resultsContainer.appendChild(closeButton);
                 resultsContainer.style.display = 'block';
+                L.DomEvent.disableScrollPropagation(resultsContainer);
 
                 closeButton.addEventListener('click', () => {
                     resultsContainer.style.display = 'none';  // Cache la liste des résultats
