@@ -6,19 +6,19 @@ import "leaflet/dist/leaflet.css";
 <Layout title="Map">
     <script src="../../assets/js/map.js"></script>
 
-    <div id="macarte" class="w-[100%] h-[800px] border-2 border-black"></div>
+    <div id="macarte" class="w-[100%] h-[800px] border-2 border-black">
+        <div id="resultsList"></div>
+    </div>
 
     <form action="" method="get">
         <label for="search">Vous recherchez quoi en fait ?</label>
-        <input type="text" name="search" id="search">
+        <input type="text" name="search" id="search" />
         <button type="button" id="searchButton"> Rechercher </button>
     </form>
 
-    <div id="resultsList"></div>
-
     <style is:inline>
         #macarte {
-            position : relative;
+            position: relative;
             z-index: 0;
         }
         .my-control {
@@ -29,26 +29,28 @@ import "leaflet/dist/leaflet.css";
         form {
             padding: 20px;
         }
-        button, #search {
+        button,
+        #search {
             border: 2px solid;
             border-radius: 5px;
             padding: 3px;
         }
         #resultsList {
             position: absolute;
-            bottom: 148px;
-            left: 3px;
+            bottom: 0;
+            left: 0;
             background-color: rgba(255, 255, 255, 0.8);
             padding: 10px;
             max-width: 400px;
             max-height: 300px;
             overflow: scroll;
-            z-index: 1;
+            z-index: 401; /* Under this value, any child of #macarte goes under it */
         }
         #closeButton {
             position: sticky;
-            top: 10px;
-            font-size: 20px;
+            width: 25px;
+            margin-left: auto;
+            font-size: 25px;
             cursor: pointer;
             color: black;
         }
