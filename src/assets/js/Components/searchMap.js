@@ -1,4 +1,4 @@
-import { SearchResult, SearchResultWithDistance } from "./SearchResult";
+import { SearchResult, SearchResultWithDistance } from "./SearchResult.js";
 
 async function searchMap() {
         const query = document.getElementById('search').value;

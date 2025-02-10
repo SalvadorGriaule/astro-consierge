@@ -1,6 +1,6 @@
 import L from "leaflet";
-import { navGPS, navIP } from "./Components/Nav";
-import AdvanceSearch from "./Components/AdvancedSearch";
+import { navGPS, navIP } from "./Components/nav.js";
+import AdvanceSearch from "./Components/AdvancedSearch.js";
 /* All imports */
 
 /* Init Getter & Setter */

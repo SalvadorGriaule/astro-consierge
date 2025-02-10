@@ -10,7 +10,7 @@ import * as crypto from "crypto"
 import { handler as astroHandler } from "./dist/server/entry.mjs";
 import { initTable, User, EmailStandBy, ResetPassword, db, Admin } from "./src/db/db.js";
 import { sendConfirm, sendReset } from "./src/db/mailSender.js"
-import { seedAdmin } from "./src/db/admin.js"
+import { seedAdmin , allUser} from "./src/db/admin.js"
 
 const SequelizeSessionStore = SequelizeStore(session.Store)
 // express const
@@ -49,6 +49,7 @@ app.use(session({
 sessionStore.sync()
 initTable()
 seedAdmin()
+allUser()
 
 app.post("/signIn/post", async (req, res) => {
     const data = req.body;
@@ -87,9 +88,9 @@ app.post("/login/post", async (req, res) => {
                     req.session.jwt = token
                     req.session.save(() => {
                         console.log(req.session.id);
+                        res.redirect(`/user/${auth.id}`)
                     })
                 })
-                res.redirect(`/user/${auth.id}`)
             } else {
                 res.send("Acces denided")
             }
@@ -129,9 +130,9 @@ app.get("/mailConfirmation/:email", async (req, res) => {
                 req.session.jwt = token
                 req.session.save(() => {
                     console.log(req.session.id);
+                    res.redirect(`/user/${confirm.id}`)
                 })
             })
-            res.redirect(`/user/${confirm.id}`)
         }
     }
 })
@@ -156,9 +157,9 @@ app.get("/resetPassword/confirm/:email", async (req, res) => {
             req.session.jwt = token
             req.session.save(() => {
                 console.log(req.session.id);
+                res.redirect(`/user/${target.id}/confirmPassword`)
             })
         })
-        res.redirect(`/user/${target.id}/confirmPassword`)
     }
 })
 
@@ -191,9 +192,9 @@ app.post("/admin/post", async (req, res) => {
                     req.session.jwt = token
                     req.session.save(() => {
                         console.log(req.session.id);
+                        res.redirect(`/Admin/dashboard`)
                     })
                 })
-                res.redirect(`/Admin/dashboard`)
             } else {
                 res.send("Acces denided")
             }

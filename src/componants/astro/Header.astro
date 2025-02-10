@@ -4,8 +4,10 @@ import Menu from "../svelte/Menu.svelte";
 
 const info = Astro.cookies.get("connect.sid")?.value;
 const json = await getSession(info);
-const id = getID(json.jwt)
-console.log(id);
+const tokenID = getID(json.jwt)
+console.log(tokenID);
+
+const id = tokenID != undefined ? tokenID.user : 0
 
 const role = json.hasOwnProperty("role") ? json.role : "guest";
 ---
@@ -13,6 +15,6 @@ const role = json.hasOwnProperty("role") ? json.role : "guest";
 <header class="flex justify-between item-center w-full p-2 bg-black text-white">
     <a href="/"><h1 class="text-2xl">Igor Service</h1></a>
     <nav>
-        <Menu role={role} id={id.user}/>
+        <Menu role={role} id={id}/>
     </nav>
 </header>

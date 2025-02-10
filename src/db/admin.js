@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt"
-import { Admin,User } from "./db.js"
+import { Admin, User } from "./db.js"
+
 
 const seedAdmin = async () => {
     if (await Admin.count() == 0) {
@@ -9,11 +10,13 @@ const seedAdmin = async () => {
     }
 }
 
-const allUser = async() => {
-    const data = await User.findAll();
+const allUser = async () => {
+    console.log(await User.count());
+    
+    const data = await User.findOne({where: {id : 1}});
     console.log(data);
-    return data    
+    return data
 }
 
 
-export { seedAdmin , allUser}
+export { seedAdmin, allUser }

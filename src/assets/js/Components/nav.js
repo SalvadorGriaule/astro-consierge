@@ -1,4 +1,4 @@
-import MapCreator from "./MapCreator";
+import MapCreator from "./mapCreator.js";
 
 function navGPS(pos) {
     const crd = pos.coords;
