@@ -32,9 +32,9 @@ const guard = (user, cred) => {
 const checkSession = async (sessionID, userID, cred) => {
     const session = await getSession(sessionID)
     if (session) {
-        const guard = guard(session.role, cred)
+        const checkGuard = guard(session, cred)
         const check = jwtCheck(session.jwt, userID)
-        if (guard && check) {
+        if (checkGuard && check) {
             return session
         } else {
             return { error: true }

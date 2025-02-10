@@ -34,6 +34,18 @@ const initTable = async () => {
         emailConfirm: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
+        },
+        ville: {
+            type: DataTypes.STRING,
+            defaultValue: null
+        },
+        postal: {
+            type: DataTypes.STRING,
+            defaultValue: null
+        },
+        addres: {
+            type: DataTypes.STRING,
+            defaultValue: null
         }
     },
         {
@@ -44,7 +56,7 @@ const initTable = async () => {
             updatedAt: false
         }
     )
-    
+
     Admin.init({
         email: {
             type: DataTypes.STRING,
@@ -56,14 +68,15 @@ const initTable = async () => {
         },
         password: {
             type: DataTypes.STRING,
-            allowNull:false
-        }},{
-            sequelize: db,
-            modelName: "Admin",
-            timestamps: true,
-            createdAt: true,
-            updatedAt: false
+            allowNull: false
         }
+    }, {
+        sequelize: db,
+        modelName: "admin",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false
+    }
     )
 
     EmailStandBy.init({
@@ -103,4 +116,4 @@ const initTable = async () => {
     await db.sync()
 }
 
-export { initTable, User, EmailStandBy , ResetPassword, Admin, db }
+export { initTable, User, EmailStandBy, ResetPassword, Admin, db }

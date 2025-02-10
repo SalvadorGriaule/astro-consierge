@@ -67,7 +67,7 @@ app.post("/signIn/post", async (req, res) => {
                     })
                 })
                 console.log(insert);
-                res.redirect(`/${insert.id}`)
+                res.redirect(`/user/${insert.id}`)
             } catch (e) {
                 console.log(e)
                 res.send("acces denid")
