@@ -57,7 +57,8 @@ globalThis.greenIcon = new L.Icon({
 
 // Verif
 console.log("Hello from global.js");
-
+const url = new URL(window.location.href).searchParams
+globalThis.interest = url.get("interest")
 
 const options = {
     enableHighAccuracy: true,

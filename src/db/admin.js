@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
-import { Admin, User } from "./db.js"
-
+import { getSession } from "./session.js"
+import { Admin } from "./db.js"
 
 const seedAdmin = async () => {
     if (await Admin.count() == 0) {
@@ -10,13 +10,14 @@ const seedAdmin = async () => {
     }
 }
 
-const allUser = async () => {
-    console.log(await User.count());
-    
-    const data = await User.findOne({where: {id : 1}});
-    console.log(data);
-    return data
+const fetchJwt = async (url,sessionID) => {
+    const session = await getSession(sessionID); 
+    if(session.jwt){
+        const data = await fetch(url,{ method:"GET",headers:{'Authorization': `Bearer ${session.jwt}`}})
+        const json = await data.json()
+        return json
+    }
 }
 
 
-export { seedAdmin, allUser }
+export { seedAdmin, fetchJwt }

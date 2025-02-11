@@ -2,13 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import { getSession, getID } from "../db/session";
 
-// const info = Astro.cookies.get("connect.sid")?.value;
-// const json = await getSession(info);
-// const adminID = getID(json.jwt);
-// if (!json.hasOwnProperty("role") && json.role != "admin")
-//     return Astro.redirect("/");
-// const role = json.role;
-const adminID  = { user: 0}
+const info = Astro.cookies.get("connect.sid")?.value;
+const json = await getSession(info);
+const adminID = getID(json.jwt);
+if (!json.hasOwnProperty("role") && json.role != "admin")
+    return Astro.redirect("/");
+const role = json.role;
 
 interface Props {
     title: string;

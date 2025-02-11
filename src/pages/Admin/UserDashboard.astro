@@ -1,15 +1,27 @@
 ---
 import AdminLayout from "../../layouts/AdminLayout.astro";
-import { allUser } from "../../db/admin";
 
-const userList = await allUser();
+import { fetchJwt } from "../../db/admin.js";
 
+const info = Astro.cookies.get("connect.sid")?.value;
+const listUser: Object[] = await fetchJwt(
+    "http://localhost:3000/allUser",
+    info,
+);
 ---
 
 <AdminLayout title="DashBoard">
     <h2 class="text-3xl">Informations des Utilisateurs</h2>
 
-    <div class="h-70 overflow-scroll w-7/8">
+    <div class="h-70 overflow-scroll w-7/8 flex justify-center">
+        {listUser.map((elem: Object) =>
+            <div class="flex space-x-4">
+                <p>{elem.username}</p>
+                <p>{elem.email}</p>
+                <p>{elem.confirm ? "vérifier" : "en attend"}</p>
+                <p>{elem.ville}</p>
+                <p>{elem.createAt}</p>
+            </div>
+         )}
     </div>
-
 </AdminLayout>

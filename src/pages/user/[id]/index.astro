@@ -1,16 +1,31 @@
 ---
 import UserLayout from '../../../layouts/UserLayout.astro';
 import { checkSession } from "../../../db/session.js"
+import { fetchJwt } from '../../../db/admin';
 
 const { id } = Astro.params;
 const info = Astro.cookies.get("connect.sid")?.value;
 const json = await checkSession(info, id, "user")
 if (json.hasOwnProperty("error") && json.error) return Astro.redirect("/");
-const role = json.role;
+const data = await fetchJwt(`http://localhost:3000/allUser/${id}`,info);
 
 ---
 
 <UserLayout title="UserSpace">
-    <h2>{id}</h2>
-    <div>{role}</div>
+    <script>
+        import Cookies from "universal-cookie"
+        import { localisation } from "../../../assets/js/module/positiion.js";
+
+        const cookies = new Cookies(null, { path: '/'})
+
+        const pos = localisation();
+        const getPosition = cookies.get("position")
+        console.log(getPosition);
+    </script>
+
+    <h2>{data.username}</h2>
+    <div class="rounded-md border-2 border-black">
+        <p>Votre email : {data.email}</p>
+        <p>Votre addres : {data.ville} {data.postal} {data.addres}</p>
+    </div>
 </UserLayout>
