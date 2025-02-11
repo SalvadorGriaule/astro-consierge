@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
 
-const db = new Sequelize("mysql://root@localhost:3306/igor")
+// const db = new Sequelize("mysql://root@localhost:3306/igor")
+const db = new Sequelize("mysql://root2:pass@localhost:3306/igor")
 
 class User extends Model { }
 class EmailStandBy extends Model { }
@@ -9,6 +10,11 @@ class Admin extends Model { }
 
 const initTable = async () => {
     User.init({
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
         username: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -34,17 +40,29 @@ const initTable = async () => {
         emailConfirm: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
+        },
+        ville: {
+            type: DataTypes.STRING,
+            defaultValue: null
+        },
+        postal: {
+            type: DataTypes.STRING,
+            defaultValue: null
+        },
+        addres: {
+            type: DataTypes.STRING,
+            defaultValue: null
         }
     },
         {
             sequelize: db,
-            modelName: "User",
+            modelName: "Users",
             timestamps: true,
             createdAt: true,
             updatedAt: false
         }
     )
-    
+
     Admin.init({
         email: {
             type: DataTypes.STRING,
@@ -56,14 +74,15 @@ const initTable = async () => {
         },
         password: {
             type: DataTypes.STRING,
-            allowNull:false
-        }},{
-            sequelize: db,
-            modelName: "Admin",
-            timestamps: true,
-            createdAt: true,
-            updatedAt: false
+            allowNull: false
         }
+    }, {
+        sequelize: db,
+        modelName: "admin",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false
+    }
     )
 
     EmailStandBy.init({
@@ -103,4 +122,4 @@ const initTable = async () => {
     await db.sync()
 }
 
-export { initTable, User, EmailStandBy , ResetPassword, Admin, db }
+export { initTable, User, EmailStandBy, ResetPassword, Admin, db }

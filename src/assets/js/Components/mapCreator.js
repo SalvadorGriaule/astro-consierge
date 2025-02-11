@@ -1,6 +1,6 @@
 import L from "leaflet";
-import { setMarker, getMarker } from '../global';
-import searchMap from "./SearchMap";
+import { setMarker, getMarker } from '../global.js';
+import searchMap from "./searchMap.js";
 
 const MapCreator = (lat, long) => {
     markers = [];

@@ -13,6 +13,7 @@ const getSession = async (sessionID) => {
 
 const getID = (jwtCheck) => {
     const id = jwt.verify(jwtCheck, rsaKey.privateKey, (err, decoded) => {
+        
         return decoded
     })  
     return id
@@ -20,7 +21,8 @@ const getID = (jwtCheck) => {
 
 const jwtCheck = (jwtIn, userID) => {
     const id = jwt.verify(jwtIn, rsaKey.privateKey, (err, decoded) => {
-        return decoded == userID ? true : false
+        console.log(decoded);
+        return decoded.user == userID ? true : false
     })
     return id;
 }
@@ -32,9 +34,10 @@ const guard = (user, cred) => {
 const checkSession = async (sessionID, userID, cred) => {
     const session = await getSession(sessionID)
     if (session) {
-        const guard = guard(session.role, cred)
+        const checkGuard = guard(session, cred)
         const check = jwtCheck(session.jwt, userID)
-        if (guard && check) {
+        console.log(check, checkGuard);        
+        if (checkGuard && check) {
             return session
         } else {
             return { error: true }
