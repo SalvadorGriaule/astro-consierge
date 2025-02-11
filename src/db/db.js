@@ -7,6 +7,7 @@ class User extends Model { }
 class EmailStandBy extends Model { }
 class ResetPassword extends Model { }
 class Admin extends Model { }
+class Igor extends Model { }
 
 const initTable = async () => {
     User.init({
@@ -68,6 +69,42 @@ const initTable = async () => {
         }
     )
 
+    Igor.init({
+
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                len: [3, Infinity]
+            }
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+                isEmail: true,
+            }
+        },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                len: [3, Infinity]
+            }
+        }, ville: {
+            type: DataTypes.STRING,
+            defaultValue: null
+        }
+    }, {
+        sequelize: db,
+        modelName: "Igor",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false
+    }
+    )
+
     Admin.init({
         email: {
             type: DataTypes.STRING,
@@ -124,7 +161,7 @@ const initTable = async () => {
         updatedAt: false
     })
 
-    await db.sync({ alter: true})
+    await db.sync({ alter: true })
 }
 
 export { initTable, User, EmailStandBy, ResetPassword, Admin, db }

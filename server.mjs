@@ -39,12 +39,6 @@ export const sessionStore = new SequelizeSessionStore({
 app.use(base, express.static("dist/client/"));
 app.use(astroHandler);
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cookiesMiddleware()).use( async (req, res, next) => {
-    console.log("universal",req.universalCookies)
-    
-    if(req.universalCookies.get("position") != undefined) await User.update({ password: hash }, { where: { id: decoded.user } })
-    next()
-})
 app.use(cookiesParser());
 app.use(session({
     secret: sessionEnv,
@@ -52,6 +46,15 @@ app.use(session({
     saveUninitialized: true,
     store: sessionStore
 }))
+app.use(cookiesMiddleware()).use( async (req, res, next) => {
+    console.log("universal",req.universalCookies)
+    if(req.universalCookies.get("position") != undefined) {
+        jwt.verify(req.session.jwt, rsaKey.privateKey, async (err, decoded) => {
+            await User.update({ data: req.universalCookies.get("position") }, { where: { id: decoded.user } })
+        })
+    } 
+    next()
+})
 
 sessionStore.sync()
 initTable()
