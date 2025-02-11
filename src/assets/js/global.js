@@ -75,4 +75,5 @@ export const Localisation = () => {
     }
 };
 
+Localisation();
 AdvanceSearch();

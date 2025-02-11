@@ -5,7 +5,7 @@ function navGPS(pos) {
 
     const lat = crd.latitude; // On récupère la lattitude de l'utilisateur
     const long = crd.longitude; // Pareil pour la longitude
-
+    
     MapCreator(lat, long);
 }
 
@@ -20,6 +20,7 @@ function navIP() {
         .then(data => {
             const lat = data.lat; // On récupère la lattitude de l'utilisateur
             const long = data.lon; // Pareil pour la longitude
+
             MapCreator(lat, long);
         })
         .catch(error => console.error('Erreur:', error));
