@@ -7,11 +7,15 @@ import cookiesParser from "cookie-parser"
 import session from "express-session"
 import cookiesMiddleware from "universal-cookie-express"
 import SequelizeStore from "connect-session-sequelize"
+import swaggerJsdoc from  "swagger-jsdoc"
+import swaggerUi from "swagger-ui-express"
 import * as crypto from "crypto"
 import { handler as astroHandler } from "./dist/server/entry.mjs";
-import { initTable, User, EmailStandBy, ResetPassword, db, Admin } from "./src/db/db.js";
+import { initTable, User, EmailStandBy, ResetPassword, db, Admin , Gerant ,Igor , Task} from "./src/db/db.js";
 import { sendConfirm, sendReset } from "./src/db/mailSender.js"
 import { seedAdmin } from "./src/db/admin.js"
+import { postCreate } from "./serverFunction.mjs"
+
 
 const SequelizeSessionStore = SequelizeStore(session.Store)
 // express const
@@ -55,6 +59,7 @@ app.use(cookiesMiddleware()).use( async (req, res, next) => {
     } 
     next()
 })
+
 
 sessionStore.sync()
 initTable()
@@ -208,6 +213,29 @@ app.post("/admin/post", async (req, res) => {
     }
 })
 
+app.post("/admin/gerant/create", async (req,res) => {
+    const data = req.body;
+    bcrypt.genSalt(saltRound, (err, salt) => {
+        bcrypt.hash(data.password, salt, async (err, hash) => {
+            data.password = hash;
+            try {
+                const insert = await Gerant.create(data)
+                sendConfirm(data.email)
+                jwt.sign({ user: insert.id , role:"Gerant"}, rsaKey.privateKey, { algorithm: 'RS256' }, (err, token) => {
+                    req.session.role = "Gerant"
+                    req.session.jwt = token
+                    req.session.save(() => {
+                        console.log(req.session.id);
+                    })
+                })
+                res.redirect(`/gerant/${insert.id}`)
+            } catch (e) {
+                res.send("acces denid")
+            }
+        })
+    }) 
+})
+
 app.get("/allUser", async (req, res) => {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
@@ -244,3 +272,43 @@ app.get("/allUser/:id", async(req,res) => {
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`)
 });
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Igor:
+ *       type: object
+ *       required:
+ *         - username
+ *         - email
+ *         - password
+ *         - ville
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: The auto-generated id of the book
+ *         username:
+ *           type: string
+ *           description: username of a igor
+ *         email:
+ *           type: string
+ *           description: email of a igor
+ *         password:
+ *           type: string
+ *           description: password of a igor
+ *         ville:
+ *           type: string
+ *           description: the city where live the igor
+ *         createdAt:
+ *           type: string
+ *           format: date
+ *           description: The date the igor was added
+ *       example:
+ *         id: 1
+ *         username: Igor
+ *         email: igor@igor.fr
+ *         password: ****
+ *         ville: Rouen
+ *         createdAt: 2020-03-10T04:05:06.157Z
+ */

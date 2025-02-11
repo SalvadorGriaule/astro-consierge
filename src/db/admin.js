@@ -5,7 +5,7 @@ import { Admin } from "./db.js"
 const seedAdmin = async () => {
     if (await Admin.count() == 0) {
         bcrypt.hash("adminPass", 10, async (err, hash) => {
-            const newAdmin = Admin.create({ email: "leseulquiadelacultureici@gmail.com", password: hash })
+            const newAdmin = Admin.create({ email: "admin@astro.com", password: hash })
         })
     }
 }

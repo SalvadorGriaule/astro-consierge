@@ -1,13 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getSession, getID } from "../db/session";
+import { getSession} from "../db/session";
+import { fetchJwt } from "../db/admin";
 
 const info = Astro.cookies.get("connect.sid")?.value;
 const json = await getSession(info);
-const adminID = getID(json.jwt);
-if (!json.hasOwnProperty("role") && json.role != "admin")
+
+if (!json.hasOwnProperty("role") && json.role != "gerant")
     return Astro.redirect("/");
-const role = json.role;
+
+const data = await fetchJwt()
 
 interface Props {
     title: string;
@@ -20,7 +22,7 @@ const { title } = Astro.props;
 
 <Layout title={title}>
     <header class="fixed top-0 w-full p-2 bg-slate-300/70 flex justify-between">
-        <p>ID:{adminID.user}</p>
+        <p></p>
         <nav>
             <ul>
                 <a href="/"><li>Retour au site</li></a>
@@ -33,12 +35,6 @@ const { title } = Astro.props;
         <div class="w-2/8 bg-zinc-300 rounded-md p-2 text-center">
             <menu>
                 <a href="/Admin/UserDashboard"><li>Utilisateur</li></a>
-                <a href="/Admin/Igor">
-                    <li>Igor</li>
-                </a>
-                <a href="/Admin/Gerant">
-                    <li>Gérant</li>
-                </a>
                 <li>DataMap</li>
             </menu>
         </div>

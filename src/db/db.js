@@ -1,13 +1,15 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
 
-const db = new Sequelize("mysql://root@localhost:3306/igor")
-// const db = new Sequelize("mysql://root2:pass@localhost:3306/igor")
+// const db = new Sequelize("mysql://root@localhost:3306/igor")
+const db = new Sequelize("mysql://root2:pass@localhost:3306/igor")
 
 class User extends Model { }
 class EmailStandBy extends Model { }
 class ResetPassword extends Model { }
 class Admin extends Model { }
 class Igor extends Model { }
+class Task extends Model { }
+class Gerant extends Model { }
 
 const initTable = async () => {
     User.init({
@@ -70,7 +72,6 @@ const initTable = async () => {
     )
 
     Igor.init({
-
         username: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -102,6 +103,68 @@ const initTable = async () => {
         timestamps: true,
         createdAt: true,
         updatedAt: false
+    }
+    )
+
+    Gerant.init({
+        nom: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        prenom: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+                isEmail: true,
+            }
+        }, password: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }, etablisment: {
+            type:DataTypes.STRING,
+            defaultValue:null
+        }
+    }, {
+        sequelize: db,
+        modelName: "Gerant",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false
+    }
+    )
+
+    Task.init({
+        titre: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        descritption: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        status: {
+            type: DataTypes.ENUM,
+            values: ['en attente', 'en cours', 'fait', "échec"]
+        },
+        limiteDate: {
+            type:DataTypes.DATE,
+            defaultValue: null
+        }, rallyPoint: {
+            type:DataTypes.STRING,
+            defaultValue:null
+        },rallyPointDate:{
+            type:DataTypes.DATE,
+            defaultValue:null
+        }
+    }, {
+        sequelize: db,
+        modelName: "Task",
+        timestamps: true,
     }
     )
 
@@ -161,7 +224,14 @@ const initTable = async () => {
         updatedAt: false
     })
 
+    User.hasMany(Task);
+    Igor.hasMany(Task);
+    Task.belongsTo(User);
+    Task.belongsTo(Igor);
+    Gerant.hasMany(Igor);
+    Igor.belongsTo(Gerant);
+
     await db.sync({ alter: true })
 }
 
-export { initTable, User, EmailStandBy, ResetPassword, Admin, db }
+export { initTable, User, EmailStandBy, ResetPassword, Admin, Igor, Gerant, Task, db }

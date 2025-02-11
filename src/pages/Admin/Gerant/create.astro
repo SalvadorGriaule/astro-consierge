@@ -1,0 +1,22 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Gérant Dashboard">
+    <nav>
+        <ul class="flex space-x-2">
+            <a href="/Admin/Gerant"><li>liste</li></a>
+            <a href="/Admin/Gerant/create"><li>créer</li></a>
+        </ul>
+    </nav>
+    <div class="w-full flex justify-center items-center">
+        <form action="/admin/gerant/create" method="post">
+            <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="text" name="prenom" placeholder="prenom">
+            <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="text" name="nom" placeholder="nom">
+            <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="text" name="email" placeholder="email">
+            <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="text" name="etablisment" placeholder="etablisment">
+            <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="password" name="password" placeholder="password">
+            <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md bg-black text-white" type="submit">
+        </form>
+    </div>
+</AdminLayout>
