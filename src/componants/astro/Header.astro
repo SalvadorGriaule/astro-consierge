@@ -2,14 +2,17 @@
 import { getSession , getID } from "../../db/session.js";
 import Menu from "../svelte/Menu.svelte";
 
-const info = Astro.cookies.get("connect.sid")?.value;
-const json = await getSession(info);
-const tokenID = getID(json.jwt)
-console.log(tokenID);
+// const info = Astro.cookies.get("connect.sid")?.value;
+// const json = await getSession(info);
+// const tokenID = getID(json.jwt)
+// console.log(tokenID);
 
-const id = tokenID != undefined ? tokenID.user : 0
+// const id = tokenID != undefined ? tokenID.user : 0
 
-const role = json.hasOwnProperty("role") ? json.role : "guest";
+// const role = json.hasOwnProperty("role") ? json.role : "guest";
+const role = "guest"
+const id = 0
+
 ---
 
 <header class="flex justify-between item-center w-full p-2 bg-black text-white">

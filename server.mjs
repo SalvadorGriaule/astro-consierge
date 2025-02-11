@@ -49,7 +49,6 @@ app.use(session({
 sessionStore.sync()
 initTable()
 seedAdmin()
-allUser()
 
 app.post("/signIn/post", async (req, res) => {
     const data = req.body;
@@ -187,7 +186,7 @@ app.post("/admin/post", async (req, res) => {
     if (auth) {
         bcrypt.compare(data.password, auth.password, (err, result) => {
             if (result) {
-                jwt.sign({ user: auth.id }, rsaKey.privateKey, { algorithm: 'RS256' }, (err, token) => {
+                jwt.sign({ user: auth.id , role: "admin" }, rsaKey.privateKey, { algorithm: 'RS256' }, (err, token) => {
                     req.session.role = "admin"
                     req.session.jwt = token
                     req.session.save(() => {
