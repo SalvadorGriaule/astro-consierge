@@ -124,7 +124,7 @@ const initTable = async () => {
         updatedAt: false
     })
 
-    await db.sync()
+    await db.sync({ alter: true})
 }
 
 export { initTable, User, EmailStandBy, ResetPassword, Admin, db }

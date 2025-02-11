@@ -19,7 +19,7 @@ const MapCreator = (lat, long) => {
     document.getElementById('searchButton').addEventListener('click', () => {
         const query = document.getElementById('search').value;
         if (query) {
-            searchMap(query);  // Appeler la fonction de recherche
+            searchMap(marker, query);  // Appeler la fonction de recherche
         }
     });
 
@@ -29,7 +29,7 @@ const MapCreator = (lat, long) => {
             e.preventDefault();
             const query = document.getElementById('search').value;
             if (query) {
-                searchMap(query);
+                searchMap(marker, query);
             }
         }
     });
