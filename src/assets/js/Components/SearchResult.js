@@ -1,7 +1,8 @@
 const SearchResult = (data) => {
-    console.log("no distance");
     const resultsContainer = document.getElementById('resultsList');
-    data.forEach((result, index) => {
+    let compteur = 0;
+    data.forEach((result) => {
+        compteur++;
         const lat = result.lat;
         const long = result.lon;
         const newMarker = L.marker([lat, long]).addTo(map);
@@ -13,7 +14,7 @@ const SearchResult = (data) => {
     
         const listItem = document.createElement('div');
         listItem.classList.add('item-search');
-        listItem.textContent = `${index + 1}: ${result.display_name}`;
+        listItem.textContent = `${compteur}: ${result.display_name}`;
     
         listItem.addEventListener('mouseover', () => {
             map.setView([lat, long], 13);
@@ -25,11 +26,10 @@ const SearchResult = (data) => {
 }
 
 const SearchResultWithDistance = (marker, data, radius) => {
-    console.log("distance");
-
     const resultsContainer = document.getElementById('resultsList');
     let flagEvent = false;
-    data.forEach((result, index) => {
+    let compteur = 0;
+    data.forEach((result) => {
         const lat = result.lat;
         const long = result.lon;
         
@@ -42,6 +42,7 @@ const SearchResultWithDistance = (marker, data, radius) => {
         console.dir("la distance est de " + distance + " mètres");
         
         if (distance <= metres) {
+            compteur++;
             flagEvent = true;
             const newMarker = L.marker([lat, long]).addTo(map);
             markers.push(newMarker);
@@ -55,7 +56,7 @@ const SearchResultWithDistance = (marker, data, radius) => {
             
             const listItem = document.createElement('div');
             listItem.setAttribute('class', 'item-search');
-            listItem.textContent = `${index + 1}: ${result.display_name}`;
+            listItem.textContent = `${compteur}: ${result.display_name}`;
 
             // Permet au passage de la souris sur le résultat de basculer visuellement sur le marker dédié
             listItem.addEventListener('mouseover', () => {
