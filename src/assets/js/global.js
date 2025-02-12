@@ -28,5 +28,14 @@ globalThis.greenIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
+globalThis.igorIcon = new L.Icon({
+    iconUrl: /* Ajouter la route relative d'une icone sympa de butler ici */'',
+    shadowUrl: './src/assets/img/marker-shadow.png',
+    iconSize: [32, 32],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
 // Verif
 console.log("Hello from global.js");

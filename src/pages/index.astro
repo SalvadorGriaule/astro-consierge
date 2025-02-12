@@ -1,6 +1,6 @@
 ---
 import UserLayout from "../layouts/UserLayout.astro";
-import Home from "../componants/svelte/home.svelte";
+import Home from "../componants/svelte/Home.svelte";
 import "../styles/home.css";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
@@ -11,21 +11,50 @@ import "../styles/home.css";
    <div id="bg-image">
       <div>
          <p>IgorService vous souhaite la bienvenue</p>
-         <Home/>
+         <Home />
       </div>
    </div>
-
-   <h1>IgorService, ce que vous recherchez, nous l'avons !</h1>
-
-   <a href="/Map?interest=stationService">Stations Service</a>
-   <a href="/Map?interest=parking">Parking</a>
-   <a href="/Map?interest=instSport">Installations Sportives</a>
-   <a href="/Map?interest=histoire">Monuments Culturels</a>
-   <a href="/Map?interest=commerce">Commerces</a>
-   <a href="/Map?interest=restaurant">Restaurants</a>
-   <a href="/Map?interest=servicePublic">Services Publics</a>
-   <a href="/Map?interest=banque">Banques</a>
-   <a href="/Map?interest=bibliotheque">Bibliotheques</a>
-   <a href="/Map?interest=cinema">Cinemas</a>
-   <a href="/Map?interest=hopital">Hopital</a>
+   <main>
+      <section id="bienvenue">
+         <h1>IgorService, ce que vous recherchez, nous l'avons !</h1>
+         <div>
+            <h2>Bienvenue</h2>
+            <p>
+               <span class="font-bold">IgorServices</span> vous accompagne dans tous
+               vos besoins
+            </p>
+            <p>
+               <span class="font-bold">Notre service de recherche</span> de lieux
+               et d'aide à domicile est conçu pour <span class="font-bold"
+                  >simplifier</span
+               > votre quotidien. Que vous recherchiez des établissements <span
+                  class="font-bold">proches de chez vous</span
+               > ou des <span class="font-bold">solutions</span> d'assistance à domicile,
+               nous vous offrons un accès <span class="font-bold"
+                  >rapide et pratique</span
+               > à une large gamme de <span class="font-bold">services</span>.
+            </p>
+            <p>
+               Grâce à notre <span class="font-bold">plateforme intuitive</span
+               >, trouvez <span class="font-bold">facilement</span> des lieux adaptés
+               à vos besoins et bénéficiez d'un <span class="font-bold"
+                  >soutien personnalisé</span
+               > pour améliorer votre qualité de vie à domicile.
+            </p>
+         </div>
+      </section>
+      <section id="services">
+         <a href="/Map?interest=stationService">Stations Service</a>
+         <a href="/Map?interest=parking">Parking</a>
+         <a href="/Map?interest=instSport">Installations Sportives</a>
+         <a href="/Map?interest=histoire">Monuments Culturels</a>
+         <a href="/Map?interest=commerce">Commerces</a>
+         <a href="/Map?interest=restaurant">Restaurants</a>
+         <a href="/Map?interest=servicePublic">Services Publics</a>
+         <a href="/Map?interest=banque">Banques</a>
+         <a href="/Map?interest=bibliotheque">Bibliotheques</a>
+         <a href="/Map?interest=cinema">Cinemas</a>
+         <a href="/Map?interest=hopital">Hopital</a>
+      </section>
+   </main>
 </UserLayout>
