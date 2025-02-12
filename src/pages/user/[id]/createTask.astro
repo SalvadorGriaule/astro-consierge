@@ -1,0 +1,17 @@
+---
+import UserLayout from '../../../layouts/UserLayout.astro';
+import TaskCreator from '../../../componants/svelte/TaskCreator.svelte'
+import { checkSession } from "../../../db/session.js"
+import { fetchJwt } from '../../../db/admin';
+
+const { id } = Astro.params;
+const info = Astro.cookies.get("connect.sid")?.value;
+const json = await checkSession(info, id, "user")
+if (json.hasOwnProperty("error") && json.error) return Astro.redirect("/");
+
+
+---
+
+<UserLayout title='Crée une tache'>
+    <TaskCreator client:load/>
+</UserLayout>

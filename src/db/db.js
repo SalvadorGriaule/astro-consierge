@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
 
-// const db = new Sequelize("mysql://root@localhost:3306/igor")
-const db = new Sequelize("mysql://root2:pass@localhost:3306/igor")
+const db = new Sequelize("mysql://root@localhost:3306/igor")
+// const db = new Sequelize("mysql://root2:pass@localhost:3306/igor")
 
 class User extends Model { }
 class EmailStandBy extends Model { }
@@ -72,12 +72,13 @@ const initTable = async () => {
     )
 
     Igor.init({
-        username: {
+        prenom: {
             type: DataTypes.STRING,
             allowNull: false,
-            validate: {
-                len: [3, Infinity]
-            }
+        },
+        nom:{
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         email: {
             type: DataTypes.STRING,
@@ -149,7 +150,8 @@ const initTable = async () => {
         },
         status: {
             type: DataTypes.ENUM,
-            values: ['en attente', 'en cours', 'fait', "échec"]
+            values: ['en attente', 'en cours', 'fait', "échec"],
+            defaultValue: "en attente"
         },
         limiteDate: {
             type:DataTypes.DATE,
@@ -231,7 +233,7 @@ const initTable = async () => {
     Gerant.hasMany(Igor);
     Igor.belongsTo(Gerant);
 
-    await db.sync({ alter: true })
+    await db.sync()
 }
 
 export { initTable, User, EmailStandBy, ResetPassword, Admin, Igor, Gerant, Task, db }

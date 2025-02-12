@@ -7,8 +7,6 @@ import cookiesParser from "cookie-parser"
 import session from "express-session"
 import cookiesMiddleware from "universal-cookie-express"
 import SequelizeStore from "connect-session-sequelize"
-import swaggerJsdoc from  "swagger-jsdoc"
-import swaggerUi from "swagger-ui-express"
 import * as crypto from "crypto"
 import { handler as astroHandler } from "./dist/server/entry.mjs";
 import { initTable, User, EmailStandBy, ResetPassword, db, Admin , Gerant ,Igor , Task} from "./src/db/db.js";
@@ -88,17 +86,26 @@ app.post("/signIn/post", async (req, res) => {
     })
 })
 
-app.post("/login/post", async (req, res) => {
+app.post("/login/:role/post", async (req, res) => {
     const data = req.body;
-    const auth = await User.findOne({ where: { email: data.email } });
+    const role = req.params.role
+    let auth = ""
+    switch (role){
+        case "user":
+            auth = await User.findOne({ where: { email: data.email } });
+            break;
+        case "Igor":
+            auth = await Igor.findOne({ where: { email: data.email } });
+            break;
+    }
     if (auth) {
         bcrypt.compare(data.password, auth.password, (err, result) => {
             if (result) {
-                jwt.sign({ user: auth.id, role: "user" }, rsaKey.privateKey, { algorithm: 'RS256' }, (err, token) => {
-                    req.session.role = "user"
+                jwt.sign({ user: auth.id, role: role }, rsaKey.privateKey, { algorithm: 'RS256' }, (err, token) => {
+                    req.session.role = role
                     req.session.jwt = token
                     req.session.save(() => {
-                        res.redirect(`/user/${auth.id}`)
+                        res.redirect(`/${role}/${auth.id}`)
                     })
                 })
             } else {
@@ -268,6 +275,128 @@ app.get("/allUser/:id", async(req,res) => {
         res.send(`Error ${e}`)
     }
 })
+
+app.get("/Gerant/all", (req,res) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    try {
+        jwt.verify(token, rsaKey.privateKey, async (err, decode) => {
+            if (decode.role == "admin") {
+                const data = await Gerant.findAll()
+                res.json(data)
+            }
+        })
+    } catch (e) {
+        res.send(`Error ${e}`)
+    }
+})
+
+app.get("/Gerant/all/public", async (req,res) => {  
+    try {
+        const data = await Gerant.findAll({attributes: ["nom","prenom","etablismen"]})
+        res.json(data)
+    } catch (e) {
+        res.send(`Error ${e}`)
+    }
+})
+
+app.get("/Gerant/:id", (req, res) => {
+    const id = req.params.id
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    try {
+        jwt.verify(token, rsaKey.privateKey, async (err, decode) => {
+            if (decode.role == "admin" || (decode.role == "gerant" && decode.user == id) ) {
+                const data = await Gerant.findOne({ where:{id : id}})
+                res.json(data)
+            }
+        })
+    } catch (e) {
+        res.send(`Error ${e}`)
+    }
+})
+
+app.post("/Igor/create", (req,res) => {
+    const data = req.body;
+    bcrypt.genSalt(saltRound, (err, salt) => {
+        bcrypt.hash(data.password, salt, async (err, hash) => {
+            data.password = hash;
+            try {
+                const insert = await Igor.create(data)
+                sendConfirm(data.email)
+                jwt.sign({ user: insert.id , role:"Igor"}, rsaKey.privateKey, { algorithm: 'RS256' }, (err, token) => {
+                    req.session.role = "Igor"
+                    req.session.jwt = token
+                    req.session.save(() => {
+                        console.log(req.session.id);
+                    })
+                })
+                // res.redirect(`/Igor/${insert.id}`)
+                res.send("great")
+            } catch (e) {
+                res.send("acces denid")
+            }
+        })
+    }) 
+})
+
+app.get("/Igor/all", (req,res) => {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    try {
+        jwt.verify(token, rsaKey.privateKey, async (err, decode) => {
+            if (decode.role == "admin") {
+                const data = await Igor.findAll()
+                res.json(data)
+            }
+        })
+    } catch (e) {
+        res.send(`Error ${e}`)
+    }
+})
+
+app.get("/Igor/all/public", async (req,res) => {  
+    try {
+        const data = await Igor.findAll({attributes: ["id","nom","prenom","ville"]})
+        res.json(data)
+    } catch (e) {
+        res.send(`Error ${e}`)
+    }
+})
+
+app.get("/Igor/:id", (req, res) => {
+    const id = req.params.id
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    try {
+        jwt.verify(token, rsaKey.privateKey, async (err, decode) => {
+            if (decode.role == "admin" || (decode.role == "Igor" && decode.user == id) ) {
+                const data = await Igor.findOne({ where:{id : id}})
+                res.json(data)
+            }
+        })
+    } catch (e) {
+        res.send(`Error ${e}`)
+    }
+})
+
+app.post("/Task/create", async (req,res) => {
+    const data = req.body;
+            try {
+                jwt.verify(req.session.jwt, rsaKey.privateKey, async (err, decode) => {
+                    if (decode.role == "user") {
+                        data.UserId = decode.user
+                        const insert = await Task.create(data)
+                        res.redirect(`/user/${decode.id}`)
+                    }
+                })
+            } catch (e) {
+                res.send("acces denid")
+            }
+})
+
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`)

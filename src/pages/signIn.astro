@@ -1,22 +1,11 @@
 ---
 import UserLayout from '../layouts/UserLayout.astro';
+import LoginSvelte from '../componants/svelte/SignIn.svelte'
 ---
 
 <UserLayout title="signIn">
-    <script>
-
-    </script>
+   
     <main class="w-full flex justify-center my-4">
-        <div class="w-1/3 p-2 flex justify-center">
-            <form action="/signIn/post" method="POST" class="flex flex-col space-y-2">
-                <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="text" name="username" placeholder="pseudo">
-                <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="email" name="email" placeholder="e-mail">
-                <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="password" name="password" placeholder="password">
-                <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="text" name="ville" placeholder="ville">
-                <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="text" name="postal" placeholder="code postal">
-                <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" type="text" name="addres" placeholder="addres">
-                <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md bg-black text-white" type="submit">
-            </form>
-        </div>
+        <LoginSvelte client:load/>
     </main>
 </UserLayout>

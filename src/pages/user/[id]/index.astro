@@ -28,4 +28,5 @@ const data = await fetchJwt(`http://localhost:3000/allUser/${id}`,info);
         <p>Votre email : {data.email}</p>
         <p>Votre addres : {data.ville} {data.postal} {data.addres}</p>
     </div>
+    <a href=`/user/${id}/createTask`>créer une tache</a>
 </UserLayout>
