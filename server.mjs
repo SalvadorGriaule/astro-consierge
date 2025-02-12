@@ -397,47 +397,34 @@ app.post("/Task/create", async (req,res) => {
             }
 })
 
+app.get("/Task/:role/:id", async (req,res) => {
+    const role = req.params.role;
+    const id = req.params.id;
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    switch (role){
+        case "user":
+            jwt.verify(token, rsaKey.privateKey, async (err, decode) => {
+                if (decode.role == "user" && decode.user == id) {
+                    const data = await Task.findAll({ where: { UserId: id }, include: User });
+                    res.json(data)
+                }
+            }) 
+            break;
+        case "Igor":
+            jwt.verify(token, rsaKey.privateKey, async (err, decode) => {
+                if (decode.role == "Igor" && decode.user == id) {
+                    const data = await Task.findAll({ where: { IgorId: id }, include: Igor });
+                    res.json(data)
+                }
+            }) 
+            break;
+    }
+    
+})
+
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`)
 });
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     Igor:
- *       type: object
- *       required:
- *         - username
- *         - email
- *         - password
- *         - ville
- *       properties:
- *         id:
- *           type: integer
- *           description: The auto-generated id of the book
- *         username:
- *           type: string
- *           description: username of a igor
- *         email:
- *           type: string
- *           description: email of a igor
- *         password:
- *           type: string
- *           description: password of a igor
- *         ville:
- *           type: string
- *           description: the city where live the igor
- *         createdAt:
- *           type: string
- *           format: date
- *           description: The date the igor was added
- *       example:
- *         id: 1
- *         username: Igor
- *         email: igor@igor.fr
- *         password: ****
- *         ville: Rouen
- *         createdAt: 2020-03-10T04:05:06.157Z
- */

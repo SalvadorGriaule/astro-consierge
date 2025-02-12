@@ -8,6 +8,7 @@ const info = Astro.cookies.get("connect.sid")?.value;
 const json = await checkSession(info, id, "user")
 if (json.hasOwnProperty("error") && json.error) return Astro.redirect("/");
 const data = await fetchJwt(`http://localhost:3000/allUser/${id}`,info);
+const listTask = await fetchJwt(`http://localhost:3000/Task/user/${id}`,info);
 
 ---
 
@@ -29,4 +30,25 @@ const data = await fetchJwt(`http://localhost:3000/allUser/${id}`,info);
         <p>Votre addres : {data.ville} {data.postal} {data.addres}</p>
     </div>
     <a href=`/user/${id}/createTask`>créer une tache</a>
+   <main class="w-full flex justify-center">
+       <div>
+        {Array.isArray(listTask) && listTask.map((elem:any) => 
+            <div class="flex space-x-2">
+                <p class="mx-2">{elem.titre}</p>
+                <p class="mx-2">{elem.status}</p>
+                <p class="mx-2">{elem.limiteDate}</p>
+            </div>
+        )}
+        {!Array.isArray(listTask) && (
+            <div class="flex">
+                <p class="mx-2">{listTask.titre}</p>
+                <p class="mx-2">{listTask.status}</p>
+                <p class="mx-2">{listTask.limiteDate}</p>
+            </div>
+        )}
+        {!listTask && (
+            <p>Pas de tache en cours</p>
+        )}
+      </div>
+   </main>
 </UserLayout>
