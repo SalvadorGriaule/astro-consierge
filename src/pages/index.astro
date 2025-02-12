@@ -1,14 +1,31 @@
 ---
-import UserLayout from '../layouts/UserLayout.astro';
-
+import UserLayout from "../layouts/UserLayout.astro";
+import Home from "../componants/svelte/home.svelte";
+import "../styles/home.css";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<UserLayout title='Igor'>
-   <p>test</p>
+<UserLayout title="Igor">
+   <div id="bg-image">
+      <div>
+         <p>IgorService vous souhaite la bienvenue</p>
+         <Home/>
+      </div>
+   </div>
 
-   <a href="/Map/?interest=stationService">station service</a>
-   <a href="/Map/?interest=hopital">Hopital</a>
+   <h1>IgorService, ce que vous recherchez, nous l'avons !</h1>
+
+   <a href="/Map?interest=stationService">Stations Service</a>
+   <a href="/Map?interest=parking">Parking</a>
+   <a href="/Map?interest=instSport">Installations Sportives</a>
+   <a href="/Map?interest=histoire">Monuments Culturels</a>
+   <a href="/Map?interest=commerce">Commerces</a>
+   <a href="/Map?interest=restaurant">Restaurants</a>
+   <a href="/Map?interest=servicePublic">Services Publics</a>
+   <a href="/Map?interest=banque">Banques</a>
+   <a href="/Map?interest=bibliotheque">Bibliotheques</a>
+   <a href="/Map?interest=cinema">Cinemas</a>
+   <a href="/Map?interest=hopital">Hopital</a>
 </UserLayout>

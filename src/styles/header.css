@@ -1,0 +1,13 @@
+nav {
+    padding: 10px;
+}
+ul>a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 5px;
+}
+ul>a:hover {
+    background-color: rgb(255, 255, 255);
+    color: black;
+}

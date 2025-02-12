@@ -5,6 +5,8 @@ function navGPS(pos) {
 
     const lat = crd.latitude; // On récupère la lattitude de l'utilisateur
     const long = crd.longitude; // Pareil pour la longitude
+
+    /* ça serait bien qu'ici il y ait du code permettant de récupérer lat et long et de les stocker quelque part, soit en BD */
     
     MapCreator(lat, long);
 }

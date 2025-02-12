@@ -1,6 +1,6 @@
 import L from "leaflet";
 import { setMarker, getMarker } from '../global.js';
-import searchMap from "./searchMap.js";
+import { searchMap, searchVille } from "./search.js";
 
 const MapCreator = (lat, long) => {
     markers = [];
@@ -14,22 +14,32 @@ const MapCreator = (lat, long) => {
 
     setMarker(lat, long, map, greenIcon);
     let marker = getMarker();
+    marker.bindPopup(/* fonction à implémenter renvoyant un string */);
+
+    // A supprimer une fois le .bindPopup complété
+    let mypopup = marker.getPopup();
+    mypopup.setContent('Vous êtes ici');
+    // ^^^^^^^^^^^^^ Placeholder ^^^^^^^^^^^^^^^^^
 
     // Ajouter un gestionnaire d'événements pour le bouton de recherche
-    document.getElementById('searchButton').addEventListener('click', () => {
+    document.getElementById('searchButton').addEventListener('click', async () => {
         const query = document.getElementById('search').value;
         if (query) {
-            searchMap(marker, query);  // Appeler la fonction de recherche
+            const ville = await searchMap(query);
+            console.log(ville);
+            searchVille(marker, ville);
         }
     });
 
     // Permet la recherche aussi en appuyant sur "Enter" dans l'input
-    document.getElementById('search').addEventListener('keydown', (e) => {
+    document.getElementById('search').addEventListener('keydown', async (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
             const query = document.getElementById('search').value;
             if (query) {
-                searchMap(marker, query);
+                const ville = await searchMap(query);
+                console.log(ville);
+                searchVille(marker, ville);
             }
         }
     });
