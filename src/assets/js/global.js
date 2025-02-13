@@ -19,9 +19,18 @@ globalThis.map = {};
 globalThis.markers = [];
 
 /* Global Icons for Leaflet */
+globalThis.blueIcon = new L.Icon({
+    iconUrl: './marker-icon-blue.png',
+    shadowUrl: './marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
 globalThis.greenIcon = new L.Icon({
-    iconUrl: './src/assets/img/marker-icon-green.png',
-    shadowUrl: './src/assets/img/marker-shadow.png',
+    iconUrl: './marker-icon-green.png',
+    shadowUrl: './marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
@@ -30,7 +39,7 @@ globalThis.greenIcon = new L.Icon({
 
 globalThis.igorIcon = new L.Icon({
     iconUrl: /* Ajouter la route relative d'une icone sympa de butler ici */'',
-    shadowUrl: './src/assets/img/marker-shadow.png',
+    shadowUrl: './marker-shadow.png',
     iconSize: [32, 32],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],

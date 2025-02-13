@@ -59,7 +59,7 @@ const MapCreator = (lat, long) => {
             let buttonBackground = L.DomUtil.create('button', 'my-button-class', div);
 
             let myBackground = L.DomUtil.create('img', '', buttonBackground);
-            myBackground.src = "./src/assets/img/map-solid.svg";
+            myBackground.src = "./map-solid.svg";
             myBackground.style = "margin-left:0px;width:20px;height:20px";
 
             L.DomEvent.on(buttonBackground, 'click', function () { this.changeBackground(); }, this);

@@ -5,7 +5,7 @@ const SearchResult = (data) => {
         compteur++;
         const lat = result.geo_point_2d.lat;
         const long = result.geo_point_2d.lon;
-        const newMarker = L.marker([lat, long]).addTo(map);
+        const newMarker = L.marker([lat, long], { icon: blueIcon }).addTo(map);
         markers.push(newMarker);
         newMarker.bindPopup(`<div>${result.com_name}<br /> ${result.dep_name}, ${result.reg_name}</div>`);
         newMarker.on('mouseover', () => {
