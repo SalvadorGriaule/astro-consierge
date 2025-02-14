@@ -1,15 +1,27 @@
 ---
 import Layout from "./Layout.astro";
 import Header from "../componants/astro/Header.astro";
+import { getSession, getID } from "../db/session";
 
 interface Props {
 	title: string;
 }
 
+
+const info = Astro.cookies.get("connect.sid")?.value;
+const json = await getSession(info);
+const tokenID = getID(json.jwt)
+console.log(tokenID); 
+
+ const id = tokenID != undefined ? tokenID.user : 0
+
+ const role = json.hasOwnProperty("role") ? json.role : "guest";
+
+
 const { title } = Astro.props;
 ---
 
 <Layout title={title}>
-	<Header />
-	<slot />
+	<Header role={role} id={id}/>
+	<slot  />
 </Layout>

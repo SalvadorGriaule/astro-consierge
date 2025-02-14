@@ -1,22 +1,21 @@
 ---
-import "../../styles/header.css"
-import { getSession, getID } from "../../db/session.js";
+import "../../styles/header.css";
 import Menu from "../svelte/Menu.svelte";
 
- const info = Astro.cookies.get("connect.sid")?.value;
-const json = await getSession(info);
-const tokenID = getID(json.jwt)
-console.log(tokenID); 
+interface Props {
+    id: number;
+    role: string;
+}
 
- const id = tokenID != undefined ? tokenID.user : 0
-
- const role = json.hasOwnProperty("role") ? json.role : "guest";
+const { id, role } = Astro.props;
 // const role = "guest";
 // const id = 0;
 ---
 
 <header>
-    <nav class="flex justify-between item-center w-full p-2 bg-black text-white">
+    <nav
+        class="flex justify-between item-center w-full p-2 bg-black text-white"
+    >
         <a href="/"><h1 class="text-2xl">IgorService</h1></a>
         <Menu role={role} id={id} />
     </nav>

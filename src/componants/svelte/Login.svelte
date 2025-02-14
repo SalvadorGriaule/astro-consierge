@@ -1,5 +1,4 @@
 <script>
-    let form = [];
     let btn = [];
     const role = ["user","Igor"]
     let current = "user"
@@ -18,7 +17,7 @@
     };
 </script>
 
-<div class="w-8/10 p-2 flex flex-col justify-center bg-neutral-100 rounded-md shadow-xl md:w-2/3 lg:w-1/2">
+<div class="w-8/10 p-2 flex flex-col justify-center bg-stone-100 rounded-md shadow-xl md:w-2/3 lg:w-1/2">
     <nav>
         <ul class="flex space-x-2 w-full mb-2">
             <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -30,6 +29,7 @@
         </ul>
     </nav>
     <div class="w-full p-2 flex flex-col justify-center">
+        <p class="text-center my-3">S'enregistré en tant que <span class="font-semibold">{current}</span></p>
         <form action="/login/{current}/post" method="POST" class="flex flex-col space-y-2">
             <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" name="email" type="email" placeholder="e-mail">
             <input class="border-2 border-solid border-black placeholder:text-center p-2 rounded-md" name="password" type="password" placeholder="password">

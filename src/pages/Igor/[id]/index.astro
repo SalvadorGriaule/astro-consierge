@@ -1,0 +1,44 @@
+---
+import UserLayout from "../../../layouts/UserLayout.astro";
+import { checkSession } from "../../../db/session.js"
+import { fetchJwt } from '../../../db/admin';
+
+const { id } = Astro.params;
+const info = Astro.cookies.get("connect.sid")?.value;
+
+const json = await checkSession(info, id, "Igor")
+if (json.hasOwnProperty("error") && json.error) return Astro.redirect("/");
+const listTask = await fetchJwt(`http://localhost:3000/Task/Igor/${id}`,info);
+// const data = await fetchJwt(`http://localhost:3000/Igor/${id}`,info);
+
+---
+
+<UserLayout title="Igor Space">
+    <!-- <p>Bienvenu {data.prenom} {data.nom}</p>
+
+    <fieldset class="border-2 border-black p-2">
+        <legend>Vos information personel</legend>
+        <p>Votre e-mail : {data.email}</p>
+    </fieldset> -->
+    <div class="w-full flex justify-center">
+        <div>
+         {Array.isArray(listTask) && listTask.map((elem:any) => 
+             <div class="flex space-x-2">
+                 <p class="mx-2">{elem.titre}</p>
+                 <p class="mx-2">{elem.status}</p>
+                 <p class="mx-2">{elem.limiteDate}</p>
+             </div>
+         )}
+         {!Array.isArray(listTask) && (
+             <div class="flex">
+                 <p class="mx-2">{listTask.titre}</p>
+                 <p class="mx-2">{listTask.status}</p>
+                 <p class="mx-2">{listTask.limiteDate}</p>
+             </div>
+         )}
+         {!listTask && (
+             <p>Pas de tache en cours</p>
+         )}
+       </div>
+    </div>
+</UserLayout>

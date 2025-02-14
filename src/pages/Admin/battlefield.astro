@@ -4,9 +4,8 @@ import Layout from "../../layouts/Layout.astro";
 
 <Layout title="kjdsq,fgmlkjdsqfg">
     <script>
-        import {  openDataSearch, paramMap ,getSessionData} from  "../../assets/js/module/fetchOpenData.js"
+        import {  openDataSearch, paramMap} from  "../../assets/js/module/fetchOpenData.js"
 
-        getSessionData()
         const search = openDataSearch("jo_associations@journal-officiel-datadila","records?limit=20")
         console.log(search);
 

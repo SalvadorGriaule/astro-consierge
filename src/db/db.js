@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
 
-const db = new Sequelize("mysql://root@localhost:3306/igor")
-// const db = new Sequelize("mysql://root2:pass@localhost:3306/igor")
+// const db = new Sequelize("mysql://root@localhost:3306/igor")
+const db = new Sequelize("mysql://root2:pass@localhost:3306/igor")
 
 class User extends Model { }
 class EmailStandBy extends Model { }

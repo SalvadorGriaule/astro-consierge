@@ -39,17 +39,16 @@ export const sessionStore = new SequelizeSessionStore({
 })
 
 app.use(base, express.static("dist/client/"));
-app.use(astroHandler);
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookiesParser());
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session({
     secret: sessionEnv,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: sessionStore
 }))
+app.use(astroHandler);
 app.use(cookiesMiddleware()).use( async (req, res, next) => {
-    console.log("universal",req.universalCookies)
     if(req.universalCookies.get("position") != undefined) {
         jwt.verify(req.session.jwt, rsaKey.privateKey, async (err, decoded) => {
             await User.update({ data: req.universalCookies.get("position") }, { where: { id: decoded.user } })
@@ -332,8 +331,7 @@ app.post("/Igor/create", (req,res) => {
                         console.log(req.session.id);
                     })
                 })
-                // res.redirect(`/Igor/${insert.id}`)
-                res.send("great")
+                res.redirect(`/Igor/${insert.id}`)
             } catch (e) {
                 res.send("acces denid")
             }
