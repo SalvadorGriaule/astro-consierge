@@ -23,7 +23,7 @@ const DisplaySearch = (marker, data) => {
 
     // Traitement de data & affichage des resultats
     let radius = AdvanceSearchOptions();
-    radius === '' ? SearchResult(data) : SearchResultWithDistance(marker, data, radius);
+    radius === '' ? SearchResult(marker, data) : SearchResultWithDistance(marker, data, radius);
 
     document.getElementById('search').value = '';
 }

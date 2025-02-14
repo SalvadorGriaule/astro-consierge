@@ -1,9 +1,7 @@
 const openDataSearch = async (...param) => {
-    const searchParam = param.toString().replaceAll(",","/")
-    console.log(searchParam);
-    
+    const searchParam = param.toString().replaceAll(",","/");    
     const clearParam = await fetch (`https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/${searchParam}`);
-    const jsonSearch = await clearParam.json()
+    const jsonSearch = await clearParam.json();
     return jsonSearch
 }
 
@@ -11,7 +9,6 @@ const openDataSearch = async (...param) => {
 const paramMap = () => {
     const url = new URL(window.location.href).searchParams
     const interest = url.get("interest")
-    console.log(interest);
     return interest 
 }
 

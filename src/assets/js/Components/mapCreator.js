@@ -1,8 +1,9 @@
 import L from "leaflet";
 import { setMarker, getMarker } from '../global.js';
-import { searchMap, searchVille } from "./search.js";
+import { searchVille } from "./search.js";
 
 const MapCreator = (lat, long) => {
+    console.dir(lat, long)
     markers = [];
     map = L.map('macarte').setView([lat, long], 13);
 
@@ -25,9 +26,8 @@ const MapCreator = (lat, long) => {
     document.getElementById('searchButton').addEventListener('click', async () => {
         const query = document.getElementById('search').value;
         if (query) {
-            const ville = await searchMap(query);
-            console.log(ville);
-            searchVille(marker, ville);
+            let marker = getMarker();
+            searchVille(marker, query);
         }
     });
 
@@ -37,9 +37,8 @@ const MapCreator = (lat, long) => {
             e.preventDefault();
             const query = document.getElementById('search').value;
             if (query) {
-                const ville = await searchMap(query);
-                console.log(ville);
-                searchVille(marker, ville);
+                let marker = getMarker();
+                searchVille(marker, query);
             }
         }
     });

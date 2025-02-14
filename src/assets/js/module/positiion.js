@@ -1,5 +1,4 @@
 import Cookies from 'universal-cookie';
-import MapCreator from '../Components/mapCreator';
 
 const cookies = new Cookies(null, { path: '/' })
 
@@ -13,8 +12,8 @@ function returnGPS(pos, cookie = true) {
     return { lat, long };
 }
 
-async function returnIP(cookie = true) {
-    const pos = await fetch('https://api.ipify.org?format=json')
+function returnIP(cookie = true) {
+    fetch('https://api.ipify.org?format=json')
         .then(response => response.json())
         .then(data => {
 
@@ -24,13 +23,12 @@ async function returnIP(cookie = true) {
         .then(data => {
             const lat = data.lat; // On récupère la lattitude de l'utilisateur
             const long = data.lon; // Pareil pour la longitude
-
+            
+            if (cookie) cookies.set("position", { lat: lat, long: long });
             return { lat, long };
         })
         .catch(error => console.error('Erreur:', error));
 
-    if (cookie) cookies.set("position", pos)
-    return pos
 }
 
 
