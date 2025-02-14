@@ -1,7 +1,7 @@
 ---
+import { Icon } from "astro-icon/components";
 import UserLayout from "../layouts/UserLayout.astro";
 import Home from "../componants/svelte/Home.svelte";
-import "../styles/home.css";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
@@ -43,18 +43,261 @@ import "../styles/home.css";
             </p>
          </div>
       </section>
+      <section id="bande">
+         <div id="icons">
+            <div>
+               <Icon name="tabler:clock" />
+               <p>24H/24</p>
+            </div>
+            <div>
+               <Icon name="mage:home-heart-fill" />
+               <p>GRANDE EXPÉRIENCE</p>
+            </div>
+         </div>
+         <div id="bande-contact">Contact</div>
+      </section>
       <section id="services">
-         <a href="/Map?interest=stationService">Stations Service</a>
-         <a href="/Map?interest=parking">Parking</a>
-         <a href="/Map?interest=instSport">Installations Sportives</a>
-         <a href="/Map?interest=histoire">Monuments Culturels</a>
-         <a href="/Map?interest=commerce">Commerces</a>
-         <a href="/Map?interest=restaurant">Restaurants</a>
-         <a href="/Map?interest=servicePublic">Services Publics</a>
-         <a href="/Map?interest=banque">Banques</a>
-         <a href="/Map?interest=bibliotheque">Bibliotheques</a>
-         <a href="/Map?interest=cinema">Cinemas</a>
-         <a href="/Map?interest=hopital">Hopital</a>
+         <h2>Nos Prestations</h2>
+         <div class="groupe-4">
+            <div class="row-groupe">
+               <div id="station-service" class="carte-services">
+                  <p>Recherchez une station-service</p>
+                  <a href="/Map?interest=stationService">
+                     <div class="button-service">Rechercher</div>
+                  </a>
+               </div>
+               <div id="parking" class="carte-services">
+                  <p>Recherchez un parking</p>
+                  <a href="/Map?interest=parking">
+                     <div class="button-service">Rechercher</div>
+                  </a>
+               </div>
+            </div>
+            <div class="row-groupe">
+               <div id="commerce" class="carte-services">
+                  <p>Recherchez un commerce</p>
+                  <a href="/Map?interest=commerce">
+                     <div class="button-service">Rechercher</div>
+                  </a>
+               </div>
+               <div id="hopital" class="carte-services">
+                  <p>Recherchez un hopital</p>
+                  <a href="/Map?interest=hopital">
+                     <div class="button-service">Rechercher</div>
+                  </a>
+               </div>
+            </div>
+         </div>
       </section>
    </main>
+
+   <style is:inline>
+      /* En-tête page accueil */
+      #bg-image {
+         width: 100%;
+         height: 40vh;
+         background-image: url("https://fastly.picsum.photos/id/57/2448/3264.jpg?hmac=ewraXYesC6HuSEAJsg3Q80bXd1GyJTxekI05Xt9YjfQ");
+         background-position: center;
+         background-size: cover;
+         background-repeat: no-repeat;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+      }
+
+      #bg-image > div {
+         border: 2px solid black;
+         background-color: rgba(226, 225, 225, 0.7);
+         width: 60%;
+         min-width: 230px;
+         max-width: 600px;
+         padding: 20px;
+         text-align: center;
+      }
+
+      #user-actions {
+         display: flex;
+         justify-content: space-around;
+         margin-top: 5px;
+      }
+
+      #register {
+         background-color: rgb(95, 95, 95);
+         color: white;
+         padding: 3px;
+         border-radius: 5px;
+      }
+
+      .button-home {
+         padding: 7px;
+      }
+
+      .button-home:hover {
+         background-color: rgb(0, 0, 0);
+      }
+
+      /* FIN en-tête */
+      /* section Bienvenue */
+      #bienvenue {
+         width: 90%;
+         margin: auto;
+      }
+
+      #bienvenue > h1 {
+         margin: 10px 0 40px 0;
+         font-weight: 700;
+      }
+
+      #bienvenue > div {
+         margin: 40px 0;
+         padding: 30px;
+         text-align: center;
+         box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.75);
+      }
+
+      #bienvenue h2 {
+         font-size: 30px;
+         border-bottom: 1px solid rgb(216, 215, 215);
+         margin-bottom: 20px;
+      }
+
+      #bienvenue p {
+         padding: 10px 0;
+      }
+
+      /* Fin Bienvenue */
+      /* Section Bande */
+      #bande {
+         background-color: #2f2f2f;
+         width: 100%;
+         height: 25vh;
+         max-height: 320px;
+      }
+      #icons {
+         padding: 35px 0;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+      }
+
+      #icons div {
+         width: 40%;
+         max-width: 600px;
+      }
+
+      [data-icon] {
+         color: white;
+         font-size: 60px;
+         margin: auto;
+      }
+
+      #icons p {
+         text-align: center;
+         font-size: 25px;
+         margin: 20px 0;
+      }
+      #bande-contact {
+         width: 30%;
+         max-width: 400px;
+         margin: auto;
+         padding: 10px;
+         text-align: center;
+         background-color: rgb(216, 215, 215);
+         border-radius: 5px;
+      }
+      /* Fin Bande */
+      /* Debut Services */
+      #services {
+         width: 90%;
+         margin: auto;
+      }
+      #services h2 {
+         font-size: 30px;
+         text-align: center;
+         margin: 20px 0;
+      }
+      .row-groupe {
+         width: 400px;
+         margin: auto;
+         padding: 35px 0;
+      }
+      .carte-services {
+         margin-bottom: 40px;
+         width: 400px;
+         height: 245px;
+         text-align: center;
+         box-shadow: 0px 0px 5px 5px rgba(222, 222, 222, 0.75);
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+      }
+      #station-service {
+         background: linear-gradient(
+               rgba(255, 255, 255, 0.5),
+               rgba(255, 255, 255, 0.5)
+            ),
+            url("./station.jpg");
+         background-position: center;
+         background-size: cover;
+         background-repeat: no-repeat;
+      }
+      #parking {
+         background: linear-gradient(
+               rgba(255, 255, 255, 0.5),
+               rgba(255, 255, 255, 0.5)
+            ),
+            url("./parking.jpg");
+         background-position: center;
+         background-size: cover;
+         background-repeat: no-repeat;
+      }
+      #commerce {
+         background: linear-gradient(
+               rgba(255, 255, 255, 0.5),
+               rgba(255, 255, 255, 0.5)
+            ),
+            url("./commerce.jpg");
+         background-position: center;
+         background-size: cover;
+         background-repeat: no-repeat;
+      }
+      #hopital {
+         background: linear-gradient(
+               rgba(255, 255, 255, 0.5),
+               rgba(255, 255, 255, 0.5)
+            ),
+            url("./hopital.jpg");
+         background-position: center;
+         background-size: cover;
+         background-repeat: no-repeat;
+      }
+      .carte-services p {
+         width: 90%;
+         margin: 30px;
+         background-color: rgba(0, 0, 0, 0.6);
+         color: white;
+      }
+      .button-service {
+         padding: 10px;
+      }
+      .button-service:hover {
+         background-color: rgba(0, 0, 0, 0.6);
+         color: white;
+         border-radius: 5px;
+      }
+      @media screen and (min-width: 768px) {
+         #bande {
+         height: 22vh;
+         max-height: 320px;
+      }
+         .row-groupe {
+            max-width: 1000px;
+            min-width: 840px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+         }
+      }
+   </style>
 </UserLayout>
